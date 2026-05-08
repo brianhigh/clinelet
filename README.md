@@ -1,4 +1,4 @@
-# clinelet
+# 🐷 clinelet
 
 `clinelet` provides a set of specialized [Cline Rules](https://docs.cline.bot/customization/cline-claude-rules) designed to transform the [VS Code Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) into a powerful, automated "Living LLM Wiki" using [SilverBullet](https://silverbullet.md/).
 
