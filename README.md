@@ -64,7 +64,7 @@ Cline will:
 - Log all operations in `wiki/log.md`.
 
 ### 2. Managing the Wiki
-- **Reviewing Content:** Open the `wiki/` folder in the [SilverBullet+ app] to browse your interlinked knowledge base.
+- **Reviewing Content:** Open the `wiki/` folder in the SilverBullet+ app to browse your interlinked knowledge base.
 - **Auditing:** Ask Cline to "lint the wiki" to find broken links, orphans, or formatting errors.
 - **Iterating:** If the extraction isn't perfect, simply ask Cline to improve the `wiki_integrator.py` script.
 
