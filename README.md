@@ -7,15 +7,22 @@ This repository provides [Cline Rules](https://docs.cline.bot/customization/clin
 - `README.md`: This file
 - `scripts/wiki_integrator.py`
 
-## Setup:
-1. Install the [SilverBullet+ app](https://silverbullet.plus/).
-2. Install [Visual Studio Code](https://code.visualstudio.com/download) and the [Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev).
-3. If your system does not have Python installed, install it. [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) is usally a good choice for that.
-4. Configure the Cline extension for accessing your AI model (LLM) of choice. Make sure the model supports tool use.
-5. Create a `workspace` folder for your wiki and place the `.clinerules` and `scripts` folders in it.
-6. Edit the two rules files to suit your needs, or use them as-is.
-7. In the `workspace` folder, create two more folders: `raw` and `wiki`.
-8. Open the SilverBullet+ app and open your `workspace\wiki` folder with it.
+## Installation
+
+1. Install [Git](https://git-scm.com/) if you don't already have it.
+2. Run this in your terminal:
+```bash
+git clone https://github.com/brianhigh/clinelet.git
+```
+3. Install the [SilverBullet+ app](https://silverbullet.plus/).
+4. Install [Visual Studio Code](https://code.visualstudio.com/download) and the [Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev).
+5. If your system does not have Python installed, install it. [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) is usally a good choice for that.
+
+## Configuration
+1. Configure the Cline extension for accessing your AI model (LLM) of choice. Make sure the model supports tool use.
+2. Create a `workspace` folder for your wiki and place the `.clinerules` and `scripts` folders in it.
+3. Edit the two rules files to suit your needs, or use them as-is.
+4. In the `workspace` folder, create two more folders: `raw` and `wiki`.
 
 ## Usage:
 1. Place some document files (.txt, .md, .html, .pdf., .docx, .xlsx., or .pptx) in the `raw` folder and ask Cline to process them using `scripts/wiki_integrator.py`.
