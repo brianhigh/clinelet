@@ -46,7 +46,7 @@ Before you begin, ensure you have the following installed:
 
 1. **Configure Cline:** Set up your preferred LLM in the Cline extension. Ensure the model supports **tool use** (e.g., Claude 3.5 Sonnet).
 2. **Customize Rules (Optional):** Review and edit `.clinerules/personal_agent.md` and `.clinerules/project_guidelines.md` to better align with your specific workflow or professional needs.
-3. **Initialize Wiki:** Ensure your `wiki/` folder contains an `index.md` to serve as your central Table of Contents.
+3. **Initialize Wiki:** Opening your empty `wiki/` folder with SilverBullet will automatically create the `index.md` file.
 
 ## 📖 Usage
 
