@@ -1,33 +1,71 @@
 # clinelet
-This repository provides [Cline Rules](https://docs.cline.bot/customization/cline-rules) files to implement a Karpathy-style [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) with the [VS Code Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) and [SilverBullet](https://silverbullet.md/) wiki [app](https://silverbullet.plus/).
 
-## Files
-- `.clinerules/personal_agent.md`: Provides work context and productivity methodology (based on Brian Tracy's [Eat that Frog!](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/))
-- `.clinerules/project_guidelines.md`: Provides LLM Wiki implementation guidelines (based on Karpathy's [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f))
-- `README.md`: This file
-- `scripts/wiki_integrator.py`
+`clinelet` provides a set of specialized [Cline Rules](https://docs.cline.bot/customization/cline-claude-rules) designed to transform the [VS Code Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) into a powerful, automated "Living LLM Wiki" using [SilverBullet](https://silverbullet.md/).
 
-## Installation
+Following the organizational principles of Andrej Karpathy, this setup enables you to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base.
 
-1. Install [Git](https://git-scm.com/) if you don't already have it.
-2. Run this in your terminal:
-```bash
-git clone https://github.com/brianhigh/clinelet.git
-```
-3. Install the [SilverBullet+ app](https://silverbullet.plus/).
-4. Install [Visual Studio Code](https://code.visualstudio.com/download) and the [Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev).
-5. If your system does not have Python installed, install it. [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) is usally a good choice for that.
+## 🚀 Key Features
 
-## Configuration
-1. Configure the Cline extension for accessing your AI model (LLM) of choice. Make sure the model supports tool use.
-2. Create a `workspace` folder for your wiki and place the `.clinerules` and `scripts` folders in it.
-3. Edit the two rules files to suit your needs, or use them as-is.
-4. In the `workspace` folder, create two more folders: `raw` and `wiki`.
+- **Automated Ingestion**: Use `scripts/wiki_integrator.py` to process various file formats (.txt, .md, .pdf, .docx, etc.) and generate structured wiki pages.
+- **Knowledge Management**: Implements a "Living LLM Wiki" approach with interlinked pages for easy discovery.
+- **Productivity Focused**: Integrates Brian Tracy's [Eat That Frog!](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/) methodology for task prioritization.
+- **Automated Maintenance**: Includes capabilities for "linting" the wiki to identify orphaned pages, broken links, and missing concepts.
 
-## Usage:
-1. Place some document files (.txt, .md, .html, .pdf., .docx, .xlsx., or .pptx) in the `raw` folder and ask Cline to process them using `scripts/wiki_integrator.py`.
-2. If Cline says it needs you to install some dependencies like Python or Python models, consider doing so, to support running the script.
-3. Cline should extract information from the `raw` files and create wiki pages in the `wiki/` folder, reate some links between them, and log what it does in `wiki/log.md`.
-4. View the wiki pages in the SilverBullet+ app to confirm you are seeing the results you expect. It should look for an `index.md`, if present, and open that first.
-5. If you remove a wiki page and ask Cline to "lint" the wiki, it should fix broken links.
-6. If Cline is having trouble extracting text using `scripts/wiki_integrator.py`, ask Cline to improve the script.
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- [Git](https://git-scm.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) for VS Code
+- [SilverBullet+ App](https://silverbullet.plus/)
+- [Python 3.x](https://www.python.org/) (Miniconda is recommended)
+
+## ⚙️ Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/brianhigh/clinelet.git
+   cd clinelet
+   ```
+
+2. **Set up your workspace:**
+   Create a new directory for your wiki (e.g., `my_wiki`). Within this directory, you must structure it as follows:
+   ```text
+   my_wiki/
+   ├── .clinerules/        <-- Copy from clinelet/.clinerules/
+   ├── scripts/            <-- Copy from clinelet/scripts/
+   ├── raw/                <-- Place your source documents here
+   └── wiki/               <-- Your generated knowledge base will live here
+   ```
+
+3. **Copy core components:**
+   Copy the `.clinerules` and `scripts` folders from this repository into your new workspace directory.
+
+## 🛠️ Configuration
+
+1. **Configure Cline:** Set up your preferred LLM in the Cline extension. Ensure the model supports **tool use** (e.g., Claude 3.5 Sonnet).
+2. **Customize Rules (Optional):** Review and edit `.clinerules/personal_agent.md` and `.clinerules/project_guidelines.md` to better align with your specific workflow or professional needs.
+3. **Initialize Wiki:** Ensure your `wiki/` folder contains an `index.md` to serve as your central Table of Contents.
+
+## 📖 Usage
+
+### 1. Ingesting Data
+Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder. Then, instruct Cline to run the integration script:
+
+> "Cline, please use `scripts/wiki_integrator.py` to process the documents in my `raw/` folder."
+
+Cline will:
+- Extract text from your files.
+- Create new, formatted Markdown pages in `wiki/`.
+- Establish links between related concepts.
+- Log all operations in `wiki/log.md`.
+
+### 2. Managing the Wiki
+- **Reviewing Content:** Open the `wiki/` folder in the [SilverBullet+ app] to browse your interlinked knowledge base.
+- **Auditing:** Ask Cline to "lint the wiki" to find broken links, orphans, or formatting errors.
+- **Iterating:** If the extraction isn't perfect, simply ask Cline to improve the `wiki_integrator.py` script.
+
+## 📄 License
+
+[MIT License](LICENSE)
