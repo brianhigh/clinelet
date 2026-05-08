@@ -1,5 +1,5 @@
 # clinelet
-This repository provides [Cline Rules](https://docs.cline.bot/customization/cline-rules) files to implement a (Karpathy-style LLM Wiki)[https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f] with the [VS Code Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) and [SilverBullet](https://silverbullet.md/) wiki [app](https://silverbullet.plus/).
+This repository provides [Cline Rules](https://docs.cline.bot/customization/cline-rules) files to implement a Karpathy-style [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) with the [VS Code Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) and [SilverBullet](https://silverbullet.md/) wiki [app](https://silverbullet.plus/).
 
 ## Files
 - `.clinerules/personal_agent.md`: Provides work context and productivity methodology (based on Brian Tracy's [Eat that Frog!](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/))
