@@ -4,6 +4,8 @@
 
 Following the organizational principles of Andrej Karpathy, this setup enables you to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base.
 
+[![Watch a video on LLM Wikis](https://img.youtube.com/vi/iXd0t60YmMw/0.jpg)](https://www.youtube.com/watch?v=iXd0t60YmMw)
+
 ## 🚀 Key Features
 
 - **Automated Ingestion**: Use `scripts/wiki_integrator.py` to process various file formats (.txt, .md, .pdf, .docx, etc.) and generate structured wiki pages.
