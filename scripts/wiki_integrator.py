@@ -5,12 +5,20 @@ import sys
 # Constants
 RAW_DIR = "raw"
 SPACE_DIR = "wiki"
-STATE_DIR = ".state"
-MANIFEST_PATH = os.path.join(STATE_DIR, ".processed_files.txt")
+STATE_DIR = ".clinelet"
+MANIFEST_PATH = os.path.join(STATE_DIR, "processed_files.txt")
 
 def load_manifest():
-    if not os.path.exists(MANIFEST_PATH):
+    # If the directory doesn't exist, the file definitely doesn't either
+    if not os.path.exists(STATE_DIR):
+        os.makedirs(STATE_DIR)
         return set()
+
+    if not os.path.exists(MANIFEST_PATH):
+        # Create an empty file if it doesn't exist
+        open(MANIFEST_PATH, 'a').close()
+        return set()
+
     try:
         with open(MANIFEST_PATH, 'r', encoding='utf-8') as f:
             return set(line.strip() for line in f if line.strip())
@@ -19,6 +27,10 @@ def load_manifest():
 
 def save_to_manifest(filename):
     try:
+        # Just in case the directory was deleted during runtime
+        if not os.path.exists(STATE_DIR):
+            os.makedirs(STATE_DIR)
+
         with open(MANIFEST_PATH, 'a', encoding='utf-8') as f:
             f.write(filename + "\n")
     except Exception as e:
