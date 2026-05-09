@@ -129,6 +129,25 @@ def process_file(file_path, filename):
                 print(f"[-] Missing 'pypdf'. Skipping: {filename}")
                 return False
 
+        elif ext in [".png", ".jpg", ".jpeg", ".gif"]:
+            try:
+                tesseract_path = shutil.which("tesseract") or "/usr/bin/tesseract"
+                result = subprocess.run(
+                    [tesseract_path, file_path, "-"],
+                    check=True,
+                    capture_output=True,
+                    text=True
+                )
+                content = result.stdout.strip()
+                if not content:
+                    print(f"[!] OCR failed to extract text from {filename}")
+                    return False
+                else:
+                    print(f"[+] OCR successful for {filename}")
+            except (subprocess.CalledProcessError, FileNotFoundError, Exception) as e:
+                print(f"[-] OCR failed for {filename}: {e}")
+                return False
+
         elif ext == ".docx":
             try:
                 import docx
