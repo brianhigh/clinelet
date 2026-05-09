@@ -56,7 +56,7 @@ Before you begin, ensure you have the following installed:
 ### 1. Ingesting Data
 Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder. Then, instruct Cline to run the integration script:
 
-> "Cline, please use `scripts/wiki_integrator.py` to process the documents in my `raw/` folder."
+> "Cline, please process the documents in my `raw/` folder."
 
 Cline will:
 - Extract text from your files.
