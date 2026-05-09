@@ -5,8 +5,8 @@ import sys
 # Constants
 RAW_DIR = "raw"
 SPACE_DIR = "wiki"
-# Fixed the path joining bug (removed os.sep)
-MANIFEST_PATH = os.path.join(RAW_DIR, ".processed_files.txt")
+STATE_DIR = ".state"
+MANIFEST_PATH = os.path.join(STATE_DIR, ".processed_files.txt")
 
 def load_manifest():
     if not os.path.exists(MANIFEST_PATH):
