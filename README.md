@@ -54,7 +54,7 @@ Before you begin, ensure you have the following installed:
 ## 📖 Usage
 
 ### 1. Ingesting Data
-Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder. Then open your LLM Wiki project folder, e.g., "my_wiki", in VS Code, select the Cline extension from the left-side navigation bar, and, in the chat box, instruct Cline to run the integration script:
+Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder. Then, in VS Code, open your LLM Wiki project folder, e.g., "my_wiki". Select the Cline extension from the left-side navigation bar. In the Cline chat box, instruct Cline to run the integration script:
 
 > "Cline, please process the documents in my `raw/` folder."
 
