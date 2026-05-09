@@ -63,7 +63,8 @@ Or you can let the agent (Cline) do this for you if it realizes they are missing
 1. **Configure Cline:** 
    - Set up your preferred LLM in the Cline extension.
      - Use a context size of at least 64k for local models (the more the better).
-     - Ensure the model supports **tool use** (e.g., local model qwen3.5:9b works fine).
+     - Ensure the model supports **tool use**
+       - a local model like qwen3.5:9b works okay, but use a larger model like gemma4:26b if you can
    - For Auto-approve, enable: 
      - [x] Read project files
      - [x] Edit project files
