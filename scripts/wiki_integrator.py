@@ -3,7 +3,7 @@ import re
 
 RAW_DIR = "raw"
 SPACE_DIR = "wiki"
-MANIFEST_PATH = "raw/.processed_files.txt"
+MANIFEST_PATH = os.path.join("raw", os.sep, ".processed_files.txt")
 
 def load_manifest():
     if not os.path.exists(MANIFEST_PATH):
