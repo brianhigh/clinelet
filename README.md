@@ -8,12 +8,16 @@ This short YouTube video introduces the concept and demostrates an implementatio
 
 [![Watch a video on LLM Wikis](https://img.youtube.com/vi/iXd0t60YmMw/0.jpg)](https://www.youtube.com/watch?v=iXd0t60YmMw)
 
+So why use VS Code, Cline, and SilverBullet? VS Code with Cline gives you the ability to use other LLMs, especially locally-hosted models via, e.g., Ollama or LM Studio. You can easily restrict Cline's actions (read/write workspace files, only execute safe commands, no web or MCP access, etc.). SilverBullet supports Lua scripting and and is open source. However, you can also use Obsidian with this setup if you want to.
+
 ## 🚀 Key Features
 
 - **Automated Ingestion**: Use `scripts/wiki_integrator.py` to process various file formats (.txt, .md, .pdf, .docx, etc.) and generate structured wiki pages.
 - **Knowledge Management**: Implements a "Living LLM Wiki" approach with interlinked pages for easy discovery.
 - **Productivity Focused**: Integrates Brian Tracy's [Eat That Frog!](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/) methodology for task prioritization.
 - **Automated Maintenance**: Includes capabilities for "linting" the wiki to identify orphaned pages, broken links, and missing concepts.
+
+**Note:** Currently the included text extraction script does not support OCR for image-based content (scanned PDFs, etc.), but if you need that, ask the agent (Cline) to build that for you.
 
 ## 📋 Prerequisites
 
@@ -30,6 +34,8 @@ To support processing non-text filetypes such as pdf, docx, xlsx, and pptx, you 
 ```bash
 pip install pypdf python-docx openpyxl python-pptx
 ```
+
+Or you can let the agent (Cline) do this for you if it realizes they are missing. Cline should do this automatically, prompting you for approval.
 
 ## ⚙️ Installation
 
@@ -54,7 +60,14 @@ pip install pypdf python-docx openpyxl python-pptx
 
 ## 🛠️ Configuration
 
-1. **Configure Cline:** Set up your preferred LLM in the Cline extension. Ensure the model supports **tool use** (e.g., local model qwen3.5:9b).
+1. **Configure Cline:** 
+   - Set up your preferred LLM in the Cline extension.
+     - Use a context size of at least 64k for local models (the more the better).
+     - Ensure the model supports **tool use** (e.g., local model qwen3.5:9b works fine).
+   - For Auto-approve, enable: 
+     - [x] Read project files
+     - [x] Edit project files
+     - [x] Execute safe commands 
 2. **Customize Rules (Optional):** Review and edit `.clinerules/personal_agent.md` and `.clinerules/project_guidelines.md` to better align with your specific workflow or professional needs.
 3. **Initialize Wiki:** Opening your empty `wiki/` folder with SilverBullet will automatically create the `index.md` file.
    - Copy `eat_that_frog.md` into your `wiki/` folder so Cline will reference that when creating "todo" lists.
@@ -62,15 +75,21 @@ pip install pypdf python-docx openpyxl python-pptx
 ## 📖 Usage
 
 ### 1. Ingesting Data
-Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder. Then, in VS Code, open your LLM Wiki project folder, e.g., "my_wiki". Select the Cline extension from the left-side navigation bar. In the Cline chat box, instruct Cline to run the integration script:
+Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder. Then, in VS Code, open your LLM Wiki project folder, e.g., "my_wiki". Select the Cline extension from the left-side navigation bar. In the Cline chat box, instruct Cline to run the integration script (in Act mode):
 
-> "process raw"
+> "process @/raw with @/scripts/wiki_integrator.py"
+
+And after processing, if the new pages lack formatting (sections, lists, tables, etc.):
+
+> "improve the markdown formatting of the new pages"
 
 Cline will:
 - Extract text from your files.
 - Create new, formatted Markdown pages in `wiki/`.
 - Establish links between related concepts.
 - Log all operations in `wiki/log.md`.
+
+If you wish to discuss the document or how you want it integrated into the wiki, use Plan mode first.
 
 ### 2. Managing the Wiki
 - **Reviewing Content:** Open the `wiki/` folder in the SilverBullet+ app to browse your interlinked knowledge base.
