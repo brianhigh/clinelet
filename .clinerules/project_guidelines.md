@@ -26,10 +26,10 @@ When a new source is added to `raw/`:
 * **Filenames:** Strictly use `snake_case` and lowercase (e.g., `[[neural_networks.md]]`).
   * **Rename:** When extracting content from raw/ documents to create new pages, rename the wiki page to better match the contents if the original filename was too vauge or misleading
 * **SilverBullet Features:** Use [SilverBullet Markdown](https://silverbullet.md/Markdown). Leverage Frontmatter and Live Queries where useful.
-* **Page Template:**
+* **Page Template:** Use this template, substituting with appropriate values (tags, etc.) as needed
 ```markdown
 ---
-tags: [wiki, concept]
+tags: [tag1, tag2, ...]
 last_modified: {{today}}
 ---
 # Page Title
