@@ -34,7 +34,6 @@ pip install pypdf python-docx openpyxl python-pptx
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/brianhigh/clinelet.git
-   cd clinelet
    ```
 
 2. **Set up your workspace:**
