@@ -104,6 +104,8 @@ Notes:
 
 - If you wish to discuss the document or how you want it integrated into the wiki, use Plan mode first.
 - If you want to reimport "raw" documents, remove the filename for them from `.clinelet/processed_files.txt` first.
+- If you want to add OCR support for image-based PDFs, you can prompt your agent to add this feature:
+> Add support for image-based PDFs by including OCR capabilities into @/scripts/wiki_integrator.py
 
 ### 2. Managing the Wiki
 - **Reviewing Content:** Open the `wiki/` folder in the SilverBullet+ app to browse your interlinked knowledge base.
