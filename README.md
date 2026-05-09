@@ -35,6 +35,7 @@ pip install pypdf python-docx openpyxl python-pptx
    ```bash
    git clone https://github.com/brianhigh/clinelet.git
    ```
+   This will create a folder `clinelet` which contains the files from this repository.
 
 2. **Set up your workspace:**
    Create a new directory for your wiki (e.g., `my_wiki`). Within this directory, you must structure it as follows:
