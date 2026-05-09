@@ -54,9 +54,10 @@ Or you can let the agent (Cline) do this for you if it realizes they are missing
    ├── raw/                <-- Place your source documents here
    └── wiki/               <-- Your generated knowledge base will live here
    ```
+   If you are using another agent hardness, like Claude Code, Hermes Agent, OpenCode, Codex, etc., use `AGENTS.md` instead. You can copy that to `my_wiki/`. Cline should recognize this file as well, if you prefer to just use `AGENTS.md` instead of `.clinerules/`.
 
 3. **Copy core components:**
-   Copy the `.clinerules` and `scripts` folders from this repository into your new workspace directory.
+   Copy the `.clinerules` (or `AGENTS.md`) and `scripts` folders from this repository into your new workspace directory.
 
 ## 🛠️ Configuration
 
@@ -72,7 +73,7 @@ Or you can let the agent (Cline) do this for you if it realizes they are missing
      - [x] Read project files
      - [x] Edit project files
      - [x] Execute safe commands 
-2. **Customize Rules (Optional):** Review and edit `.clinerules/personal_agent.md` and `.clinerules/project_guidelines.md` to better align with your specific workflow or professional needs.
+2. **Customize Rules (Optional):** Review and edit `.clinerules/personal_agent.md` and `.clinerules/project_guidelines.md` (or `AGENTS.md`) to better align with your specific workflow or professional needs.
 3. **Initialize Wiki:** 
    - Opening your empty `wiki/` folder with SilverBullet will automatically create the `index.md` file.
    - If this does not create `index.md`, or if it is rather bare, you can copy the one included here into `wiki/`.
