@@ -78,11 +78,15 @@ Or you can let the agent (Cline) do this for you if it realizes they are missing
 ### 1. Ingesting Data
 Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder. Then, in VS Code, open your LLM Wiki project folder, e.g., "my_wiki". Select the Cline extension from the left-side navigation bar. In the Cline chat box, instruct Cline to run the integration script (in Act mode):
 
-> "process @/raw with @/scripts/wiki_integrator.py"
+> process @/raw with @/scripts/wiki_integrator.py
 
-And after processing, if the new pages lack formatting (sections, lists, tables, etc.):
+Or simply:
 
-> "improve the markdown formatting of the new pages"
+> process raw
+
+And after processing, if the new pages lack formatting (sections, lists, tables, links, etc.):
+
+> improve the markdown formatting of the new pages, condense long pages, and interlink with other pages
 
 Cline will:
 - Extract text from your files.
