@@ -4,7 +4,7 @@
 
 Following the organizational principles of Andrej Karpathy, this setup enables you to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base.
 
-This short YouTube video introduces the concept and demostrates an implementation with a different toolset (Clause Code and Obsidian wiki):
+This short YouTube video introduces the concept and demostrates an implementation with a different toolset (Claude Code and Obsidian wiki):
 
 [![Watch a video on LLM Wikis](https://img.youtube.com/vi/iXd0t60YmMw/0.jpg)](https://www.youtube.com/watch?v=iXd0t60YmMw)
 
