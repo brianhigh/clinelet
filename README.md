@@ -8,7 +8,7 @@ This short YouTube video introduces the concept and demostrates an implementatio
 
 [![Watch a video on LLM Wikis](https://img.youtube.com/vi/iXd0t60YmMw/0.jpg)](https://www.youtube.com/watch?v=iXd0t60YmMw)
 
-So why use VS Code, Cline, and SilverBullet? VS Code with Cline gives you the ability to use other LLMs, especially locally-hosted models via, e.g., Ollama or LM Studio. You can easily restrict Cline's actions (read/write workspace files, only execute safe commands, no web or MCP access, etc.). SilverBullet supports Lua scripting and and is open source. However, you can also use [Obsidian](https://obsidian.md) with this setup if you want to. And if you prefer the open source version of VS Code, you can use [VSCodium](https://vscodium.com).
+So why use VS Code, Cline, and SilverBullet? VS Code with Cline gives you the ability to use other LLMs, especially locally-hosted models via, e.g., [Ollama](https://ollama.com/download) or [LM Studio](https://lmstudio.ai/download). You can easily restrict Cline's actions (read/write workspace files, only execute safe commands, no web or MCP access, etc.). SilverBullet supports Lua scripting and and is open source. However, you can also use [Obsidian](https://obsidian.md) with this setup if you want to. And if you prefer the open source version of VS Code, you can use [VSCodium](https://vscodium.com).
 
 ## 🚀 Key Features
 
