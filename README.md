@@ -23,6 +23,12 @@ Before you begin, ensure you have the following installed:
 - [SilverBullet+ App](https://silverbullet.plus/)
 - [Python 3.x](https://www.python.org/) (Miniconda is recommended)
 
+To support processing non-text filetypes such as pdf, docx, xlsx, and pptx, you will also need some additional Python packages, which you can install from your Terminal with:
+
+```bash
+pip install pypdf python-docx openpyxl python-pptx
+```
+
 ## ⚙️ Installation
 
 1. **Clone the repository:**
