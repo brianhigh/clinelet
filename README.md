@@ -64,8 +64,10 @@ Or you can let the agent (Cline) do this for you if it realizes they are missing
    - Set up your preferred LLM in the Cline extension.
      - Use a context size of at least 64k for local models (the more the better).
      - Ensure the model supports **tool use**
-       - A local model like qwen3.5:9b works okay, but use a larger model like gemma4:26b if you can
-       - If your model is running too slowly, try a smaller model (e.g., qwen3.5:4b) with a larger context size (e.g., 128k).
+     - And when using locally hosted LLMs:
+       - A model like qwen3.5:9b works okay, but use a larger model (like gemma4:26b) if you can
+       - If your model is running too slowly, try a smaller model (like qwen3.5:4b) with a larger context size (like 128k).
+       - If have an "Apple Silicon" M-series processer and less than 32 GB unified memory, use LM Studio to serve MLX-quantized models for ~2x speed over Ollama.
    - For Auto-approve, enable: 
      - [x] Read project files
      - [x] Edit project files
