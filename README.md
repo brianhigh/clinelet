@@ -107,6 +107,8 @@ Notes:
 - If you want to add OCR support for image-based PDFs, you can prompt your agent to add this feature:
 > Add support for image-based PDFs by including OCR capabilities into @/scripts/wiki_integrator.py
 
+I tried this and got good results on macOS and Linux. Supports gif, png, and jpeg as well. See: `scripts/wiki_integrator_with_ocr.py`.
+
 ### 2. Managing the Wiki
 - **Reviewing Content:** Open the `wiki/` folder in the SilverBullet+ app to browse your interlinked knowledge base.
 - **Auditing:** Ask Cline to "lint the wiki" to find broken links, orphans, or formatting errors.
