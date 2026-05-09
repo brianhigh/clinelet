@@ -70,7 +70,9 @@ Or you can let the agent (Cline) do this for you if it realizes they are missing
      - [x] Edit project files
      - [x] Execute safe commands 
 2. **Customize Rules (Optional):** Review and edit `.clinerules/personal_agent.md` and `.clinerules/project_guidelines.md` to better align with your specific workflow or professional needs.
-3. **Initialize Wiki:** Opening your empty `wiki/` folder with SilverBullet will automatically create the `index.md` file.
+3. **Initialize Wiki:** 
+   - Opening your empty `wiki/` folder with SilverBullet will automatically create the `index.md` file.
+   - If this does not create `index.md`, or if it is rather bare, you can copy the one included here into `wiki/`.
    - Copy `eat_that_frog.md` into your `wiki/` folder so Cline will reference that when creating "todo" lists.
 
 ## 📖 Usage
