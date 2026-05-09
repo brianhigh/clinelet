@@ -1,6 +1,6 @@
 # 🐸 clinelet
 
-`clinelet` provides a set of specialized [Cline Rules](https://docs.cline.bot/customization/cline-claude-rules) designed to transform the [VS Code Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) into a powerful, automated "Living LLM Wiki" using [SilverBullet](https://silverbullet.md/).
+`clinelet` provides a set of specialized [Cline Rules](https://docs.cline.bot/customization/cline-claude-rules) designed to transform the [VS Code Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) into a powerful, automated "Living LLM Wiki" curator agent. The wiki it builds will be optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app.
 
 Following the organizational principles of Andrej Karpathy, this setup enables you to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base.
 
