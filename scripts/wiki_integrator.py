@@ -49,7 +49,7 @@ def process_file(file_path, filename):
                     text += page.extract_text() + "\n"
                 content = text.strip()
                 if not content:
-                    content = "[Warning: PDF parsed but no text was extracted. The PDF might be image-base.]"
+                    content = "[Warning: PDF parsed but no text was extracted. The PDF might be image-based.]"
             except ImportError:
                 content = "[Error: pypdf library not found. Please install it using 'pip install pypdf']."
             except Exception as e:
