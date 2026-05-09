@@ -4,6 +4,8 @@
 
 Following the organizational principles of Andrej Karpathy, this setup enables you to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base.
 
+This short YouTube video introduces the concept and demostrates an implementation with a different toolset (Clause Code and Obsidian wiki):
+
 [![Watch a video on LLM Wikis](https://img.youtube.com/vi/iXd0t60YmMw/0.jpg)](https://www.youtube.com/watch?v=iXd0t60YmMw)
 
 ## 🚀 Key Features
@@ -52,7 +54,7 @@ pip install pypdf python-docx openpyxl python-pptx
 
 ## 🛠️ Configuration
 
-1. **Configure Cline:** Set up your preferred LLM in the Cline extension. Ensure the model supports **tool use** (e.g., Claude 3.5 Sonnet).
+1. **Configure Cline:** Set up your preferred LLM in the Cline extension. Ensure the model supports **tool use** (e.g., local model qwen3.5:9b).
 2. **Customize Rules (Optional):** Review and edit `.clinerules/personal_agent.md` and `.clinerules/project_guidelines.md` to better align with your specific workflow or professional needs.
 3. **Initialize Wiki:** Opening your empty `wiki/` folder with SilverBullet will automatically create the `index.md` file.
    - Copy `eat_that_frog.md` into your `wiki/` folder so Cline will reference that when creating "todo" lists.
@@ -62,7 +64,7 @@ pip install pypdf python-docx openpyxl python-pptx
 ### 1. Ingesting Data
 Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder. Then, in VS Code, open your LLM Wiki project folder, e.g., "my_wiki". Select the Cline extension from the left-side navigation bar. In the Cline chat box, instruct Cline to run the integration script:
 
-> "Cline, please process the documents in my `raw/` folder."
+> "process raw"
 
 Cline will:
 - Extract text from your files.
