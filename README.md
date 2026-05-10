@@ -185,6 +185,12 @@ This produces good results on Windows, macOS, and Linux.
   - Linux users should use their distribution's native package manager.
 - The OCR-enhanced script is available at `scripts/wiki_integrator_with_ocr.py`.
 
+**Usage:**
+
+You can use this extended prompt to process all supported filetypes and cleanup and integrate the results:
+
+> Process @/raw with @/scripts/wiki_integrator_with_ocr.py. Make sure all documents in @/raw are converted to wiki pages or notify me those which were not and why. Clean up the markdown of new pages. Don't worry about unreadable sections, just focus on what's mostly readable. Improve the markdown formatting of the new pages, condense (summarize) long pages (e.g., transcripts), and interlink with other pages.
+
 ### 2. Managing the Wiki
 
 | Task | Action |
