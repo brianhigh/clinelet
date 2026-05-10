@@ -1,119 +1,205 @@
-# 🐸 clinelet
+# 🐸 Clinelet
 
-`clinelet` provides a set of specialized [Cline Rules](https://docs.cline.bot/customization/cline-claude-rules) designed to transform the [VS Code Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) into a powerful, automated "Living LLM Wiki" curator agent. The wiki it builds will be optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app.
+**Transform the VS Code Cline Extension into an automated "Living LLM Wiki" curator agent.**
 
-Following the organizational principles of Andrej Karpathy, this setup enables you to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base.
+`clinelet` provides a set of specialized [Cline Rules](https://docs.cline.bot/customization/cline-claude-rules) designed to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base — optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app.
 
-This short YouTube video introduces the concept and demostrates an implementation with a different toolset (Claude Code and Obsidian wiki):
+Following the organizational principles proposed by [Andrej Karpathy](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), this setup creates a "Living LLM Wiki" — a dense web of interconnected Markdown pages that enable easy discovery and connection between disparate ideas.
+
+---
+
+## 📺 Overview
+
+The following video introduces the concept and demonstrates an implementation with a different toolset (Claude Code and Obsidian wiki):
 
 [![Watch a video on LLM Wikis](https://img.youtube.com/vi/iXd0t60YmMw/0.jpg)](https://www.youtube.com/watch?v=iXd0t60YmMw)
 
-So why use VS Code, Cline, and SilverBullet? VS Code with Cline gives you the ability to use other LLMs, especially locally-hosted models via, e.g., [Ollama](https://ollama.com/download) or [LM Studio](https://lmstudio.ai/download). You can easily restrict Cline's actions (read/write workspace files, only execute safe commands, no web or MCP access, etc.). SilverBullet supports Lua scripting and and is open source (the [self-hosted web app](https://github.com/silverbulletmd/silverbullet/blob/main/LICENSE.md) version, but not the [desktop version](https://silverbullet.plus/faq)) . However, you can also use [Obsidian](https://obsidian.md) with this setup if you want to. And if you prefer the open source version of VS Code, you can use [VSCodium](https://vscodium.com).
+---
+
+## 🛠️ Why VS Code, Cline & SilverBullet?
+
+| Tool | Benefit |
+|------|---------|
+| **VS Code** | Use other LLMs, especially locally-hosted models via [Ollama](https://ollama.com/download) or [LM Studio](https://lmstudio.ai/download) |
+| **Cline** | Easily restrict actions (read/write workspace files, only execute safe commands, no web or MCP access, etc.) |
+| **SilverBullet** | Supports Lua scripting and is open source ([self-hosted web app](https://github.com/silverbulletmd/silverbullet/blob/main/LICENSE.md)) |
+
+> **Alternatives:** You can also use [Obsidian](https://obsidian.md) with this setup if preferred. For an open-source VS Code alternative, use [VSCodium](https://vscodium.com).
+
+---
 
 ## 🚀 Key Features
 
-- **Automated Ingestion**: Use `scripts/wiki_integrator.py` to process various file formats (.txt, .md, .pdf, .docx, etc.) and generate structured wiki pages.
-- **Knowledge Management**: Implements a "Living LLM Wiki" approach with interlinked pages for easy discovery.
-- **Productivity Focused**: Integrates Brian Tracy's [Eat That Frog!](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/) methodology for task prioritization.
-- **Automated Maintenance**: Includes capabilities for "linting" the wiki to identify orphaned pages, broken links, and missing concepts.
+| Feature | Description |
+|---------|-------------|
+| **Automated Ingestion** | Use `scripts/wiki_integrator.py` to process various file formats (`.txt`, `.md`, `.pdf`, `.docx`, etc.) and generate structured wiki pages |
+| **Knowledge Management** | Implements a "Living LLM Wiki" approach with interlinked pages for easy discovery |
+| **Productivity Focused** | Integrates Brian Tracy's [Eat That Frog!](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/) methodology for task prioritization |
+| **Automated Maintenance** | Includes capabilities for "linting" the wiki to identify orphaned pages, broken links, and missing concepts |
 
-**Note:** Currently the included text extraction script does not support OCR for image-based content (scanned PDFs, etc.), but if you need that, ask the agent (Cline) to build that for you.
+> **Note:** The included text extraction script does not support OCR for image-based content (scanned PDFs, etc.). If you need this capability, prompt Cline to build it for you.
+
+---
 
 ## 📋 Prerequisites
 
-Before you begin, ensure you have the following installed:
+Ensure the following tools are installed on your system:
 
-- [Git](https://git-scm.com/)
-- [Visual Studio Code](https://code.visualstudio.com/)
-- [Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) for VS Code
-- [SilverBullet+ App](https://silverbullet.plus/)
-- [Python 3.x](https://www.python.org/) (Miniconda is recommended)
+| Tool | Requirement |
+|------|-------------|
+| [Git](https://git-scm.com/) | Version control |
+| [Visual Studio Code](https://code.visualstudio.com/) | Editor |
+| [Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) | VS Code extension |
+| [SilverBullet+ App](https://silverbullet.plus/) | Wiki viewer |
+| [Python 3.x](https://www.python.org/) | Scripting runtime (Miniconda recommended) |
 
-To support processing non-text filetypes such as pdf, docx, xlsx, and pptx, you will also need some additional Python packages, which you can install from your Terminal with:
+### Additional Python Packages
+
+To process non-text filetypes (`.pdf`, `.docx`, `.xlsx`, `.pptx`), install these additional packages:
 
 ```bash
 pip install pypdf python-docx openpyxl python-pptx
 ```
 
-Or you can let the agent (Cline) do this for you if it realizes they are missing. Cline should do this automatically, prompting you for approval.
+> Cline will automatically detect missing dependencies and prompt you for approval to install them.
+
+---
 
 ## ⚙️ Installation
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/brianhigh/clinelet.git
-   ```
-   This will create a folder `clinelet` which contains the files from this repository.
+### Step 1: Clone the Repository
 
-2. **Set up your workspace:**
-   Create a new directory for your wiki (e.g., `my_wiki`). Within this directory, you must structure it as follows:
-   ```text
-   my_wiki/
-   ├── .clinerules/        <-- Copy from clinelet/.clinerules/
-   ├── scripts/            <-- Copy from clinelet/scripts/
-   ├── raw/                <-- Place your source documents here
-   └── wiki/               <-- Your generated knowledge base will live here
-   ```
-   If you are using another agent hardness, like Claude Code, Hermes Agent, OpenCode, Codex, etc., use `AGENTS.md` instead. You can copy that to `my_wiki/`. Cline should recognize this file as well, if you prefer to just use `AGENTS.md` instead of `.clinerules/`.
+```bash
+git clone https://github.com/brianhigh/clinelet.git
+```
 
-3. **Copy core components:**
-   Copy the `.clinerules` (or `AGENTS.md`) and `scripts` folders from this repository into your new workspace directory.
+This creates a `clinelet/` folder containing the files from this repository.
+
+### Step 2: Set Up Your Workspace
+
+Create a new directory for your wiki (e.g., `my_wiki/`) with the following structure:
+
+```text
+my_wiki/
+├── .clinerules/        ← Copy from clinelet/.clinerules/
+├── scripts/            ← Copy from clinelet/scripts/
+├── raw/                ← Place your source documents here
+└── wiki/               ← Your generated knowledge base
+```
+
+> **Alternative Agents:** If using another agent framework (Claude Code, Hermes Agent, OpenCode, Codex, etc.), copy `AGENTS.md` to your workspace instead of `.clinerules/`. Cline also recognizes `AGENTS.md`.
+
+### Step 3: Copy Core Components
+
+Copy the `.clinerules/` (or `AGENTS.md`) and `scripts/` folders from this repository into your new workspace directory.
+
+---
 
 ## 🛠️ Configuration
 
-1. **Configure Cline:** 
-   - Set up your preferred LLM in the Cline extension.
-     - Use a context size of at least 64k for local models (the more the better).
-     - Ensure the model supports **tool use**
-     - And when using locally hosted LLMs:
-       - A model like qwen3.5:9b works okay, but use a larger model (like gemma4:26b or qwen3.6:35b) if you can
-       - If your model is running too slowly, try a smaller model (like qwen3.5:4b) with a larger context size (like 128k).
-       - If have an "Apple Silicon" M-series processer and less than 32 GB unified memory, use LM Studio to serve MLX-quantized models for ~2x speed over Ollama (GGUF).
-   - For Auto-approve, enable: 
-     - [x] Read project files
-     - [x] Edit project files
-     - [x] Execute safe commands 
-2. **Customize Rules (Optional):** Review and edit `.clinerules/personal_agent.md` and `.clinerules/project_guidelines.md` (or `AGENTS.md`) to better align with your specific workflow or professional needs.
-3. **Initialize Wiki:** 
-   - Opening your empty `wiki/` folder with SilverBullet will automatically create the `index.md` file.
-   - If this does not create `index.md`, or if it is rather bare, you can copy the one included here into `wiki/`.
-   - Copy `eat_that_frog.md` into your `wiki/` folder so Cline will reference that when creating "todo" lists.
+### Step 1: Configure Cline
+
+1. Set up your preferred LLM in the Cline extension with these recommendations:
+
+   | Parameter | Recommendation |
+   |-----------|----------------|
+   | **Context Size** | At least 64k for local models (more is better) |
+   | **Tool Use** | Must be supported |
+
+2. **Locally Hosted LLM Guidelines:**
+
+   | Scenario | Recommendation |
+   |----------|----------------|
+   | General use | `qwen3.5:9b` works; prefer larger models like `gemma4:26b` or `qwen3.6:35b` if available |
+   | Slow performance | Try a smaller model (`qwen3.5:4b`) with a larger context size (`128k`) |
+   | Apple Silicon (M-series, <32 GB RAM) | Use [LM Studio](https://lmstudio.ai/download) to serve MLX-quantized models for ~2x speed over Ollama (GGUF) |
+
+3. **Enable these Auto-approve options:**
+
+   - [x] Read project files
+   - [x] Edit project files
+   - [x] Execute safe commands
+
+### Step 2: Customize Rules (Optional)
+
+Review and edit the following files to align with your specific workflow:
+
+- `.clinerules/personal_agent.md`
+- `.clinerules/project_guidelines.md` (or `AGENTS.md`)
+
+### Step 3: Initialize the Wiki
+
+1. Open your empty `wiki/` folder in SilverBullet — `index.md` will be created automatically.
+2. If `index.md` is not created (or is bare), copy the included `index.md` into `wiki/`.
+3. Copy `eat_that_frog.md` into `wiki/` so Cline references it when generating todo lists.
+
+---
 
 ## 📖 Usage
 
 ### 1. Ingesting Data
-Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder. Then, in VS Code, open your LLM Wiki project folder, e.g., "my_wiki". Select the Cline extension from the left-side navigation bar. In the Cline chat box, instruct Cline to run the integration script (in Act mode):
 
-> process @/raw with @/scripts/wiki_integrator.py
+1. Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder.
+2. In VS Code, open your LLM Wiki project folder (e.g., `my_wiki`).
+3. Select the Cline extension from the left-side navigation bar.
+4. In the Cline chat box, instruct Cline to run the integration script (**Act mode**):
 
-And after processing, if the new pages lack formatting (sections, lists, tables, links, etc.):
+   ```
+   process @/raw with @/scripts/wiki_integrator.py
+   ```
 
-> improve the markdown formatting of the new pages, condense long pages, and interlink with other pages
+5. After processing, if the new pages lack formatting (sections, lists, tables, links, etc.):
 
-Cline will:
-- Extract text from your files.
-- Create new, formatted Markdown pages in `wiki/`.
-- Establish links between related concepts.
-- Log all operations in `wiki/log.md`.
+   ```
+   improve the markdown formatting of the new pages, condense long pages, and interlink with other pages
+   ```
 
-Notes:
+**Cline will:**
 
-- If you wish to discuss the document or how you want it integrated into the wiki, use Plan mode first.
-- If you want to reimport "raw" documents, remove the filename for them from `.clinelet/processed_files.txt` first.
-- If you want to add OCR support for image-based PDFs, you can prompt your agent to add this feature:
-> Add support for image-based PDFs by including OCR capabilities into @/scripts/wiki_integrator.py
-  - I tried this and got good results on Windows, macOS and Linux. Supports:
-    ".pdf", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".tif", ".webp" on Windows, macOS and Linux
-    - See `scripts/wiki_integrator_with_ocr.py`.
-    - You need to install some dependencies: tesseract OCR and poppler. Do a web search (or ask an LLM):
-      - "how to install tesseract and poppler on windows with chocolatey or winget"
-      - "how to install tesseract and poppler on macos with homebrew or macports"
-      - ... or similar for your Linux distribution using its native package manager
+| Action | Result |
+|--------|--------|
+| Extract text | From your uploaded files |
+| Create pages | Formatted Markdown pages in `wiki/` |
+| Establish links | Between related concepts |
+| Log operations | All actions recorded in `wiki/log.md` |
+
+#### Additional Notes
+
+- **Discussion Mode:** Use **Plan mode** first if you wish to discuss how a document should be integrated into the wiki.
+- **Re-importing Documents:** Remove the filename from `.clinelet/processed_files.txt` to reimport existing `raw/` documents.
+
+#### Adding OCR Support
+
+To add OCR support for image-based PDFs, prompt Cline with:
+
+```
+Add support for image-based PDFs by including OCR capabilities into @/scripts/wiki_integrator.py
+```
+
+This produces good results on Windows, macOS, and Linux. Supported formats:
+
+| Supported Formats |
+|-------------------|
+| `.pdf`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.bmp`, `.tiff`, `.tif`, `.webp` |
+
+**Requirements:**
+
+- Install **Tesseract OCR** and **Poppler** dependencies.
+- Install via web search (or ask an LLM):
+  - *"how to install tesseract and poppler on Windows with Chocolatey or Winget"*
+  - *"how to install tesseract and poppler on macOS with Homebrew or MacPorts"*
+  - Or search for your Linux distribution using its native package manager
+- The OCR-enhanced script is available at `scripts/wiki_integrator_with_ocr.py`.
 
 ### 2. Managing the Wiki
-- **Reviewing Content:** Open the `wiki/` folder in the SilverBullet+ app to browse your interlinked knowledge base.
-- **Auditing:** Ask Cline to "lint the wiki" to find broken links, orphans, or formatting errors.
-- **Iterating:** If the extraction isn't perfect, simply ask Cline to improve the `wiki_integrator.py` script.
+
+| Task | Action |
+|------|--------|
+| **Reviewing Content** | Open the `wiki/` folder in SilverBullet+ to browse your interlinked knowledge base |
+| **Auditing** | Ask Cline to *"lint the wiki"* to find broken links, orphans, or formatting errors |
+| **Iterating** | Ask Cline to improve the `wiki_integrator.py` script if extraction isn't perfect |
+
+---
 
 ## 📄 License
 
