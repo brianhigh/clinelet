@@ -123,7 +123,11 @@ Copy the `.clinerules/` (or `AGENTS.md`) and `scripts/` folders from this reposi
 Review and edit the following files to align with your specific workflow:
 
 - `.clinerules/personal_agent.md`
-- `.clinerules/project_guidelines.md` (or `AGENTS.md`)
+- `.clinerules/project_guidelines.md`
+
+Or, alternatively:
+
+- `AGENTS.md`
 
 ### Step 3: Initialize the Wiki
 
