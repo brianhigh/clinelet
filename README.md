@@ -22,7 +22,7 @@ The following video introduces the concept and demonstrates an implementation wi
 |------|---------|
 | **VS Code** | Use other LLMs, especially locally-hosted models via [Ollama](https://ollama.com/download) or [LM Studio](https://lmstudio.ai/download) |
 | **Cline** | Easily restrict actions (read/write workspace files, only execute safe commands, no web or MCP access, etc.) |
-| **SilverBullet** | Supports Lua scripting and is open source ([self-hosted web app](https://github.com/silverbulletmd/silverbullet/blob/main/LICENSE.md)) |
+| **SilverBullet** | Supports Lua scripting and is open source ([self-hosted web app](https://github.com/silverbulletmd/silverbullet/blob/main/LICENSE.md)) or open core ([desktop app](https://silverbullet.plus/faq))|
 
 > **Alternatives:** You can also use [Obsidian](https://obsidian.md) with this setup if preferred. For an open-source VS Code alternative, use [VSCodium](https://vscodium.com).
 
@@ -36,8 +36,6 @@ The following video introduces the concept and demonstrates an implementation wi
 | **Knowledge Management** | Implements a "Living LLM Wiki" approach with interlinked pages for easy discovery |
 | **Productivity Focused** | Integrates Brian Tracy's [Eat That Frog!](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/) methodology for task prioritization |
 | **Automated Maintenance** | Includes capabilities for "linting" the wiki to identify orphaned pages, broken links, and missing concepts |
-
-> **Note:** The included text extraction script does not support OCR for image-based content (scanned PDFs, etc.). If you need this capability, prompt Cline to build it for you.
 
 ---
 
@@ -170,13 +168,9 @@ Review and edit the following files to align with your specific workflow:
 
 #### Adding OCR Support
 
-To add OCR support for image-based PDFs, prompt Cline with:
+To add OCR support for image-based PDFs and various image file formats, use `scripts/wiki_integrator_with_ocr.py` instead of `scripts/wiki_integrator.py`
 
-```
-Add support for image-based PDFs by including OCR capabilities into @/scripts/wiki_integrator.py
-```
-
-This produces good results on Windows, macOS, and Linux. Supported formats:
+This produces good results on Windows, macOS, and Linux.
 
 | Supported Formats |
 |-------------------|
@@ -188,7 +182,7 @@ This produces good results on Windows, macOS, and Linux. Supported formats:
 - Install via web search (or ask an LLM):
   - *"how to install tesseract and poppler on Windows with Chocolatey or Winget"*
   - *"how to install tesseract and poppler on macOS with Homebrew or MacPorts"*
-  - Or search for your Linux distribution using its native package manager
+  - Linux users should use their distribution's native package manager.
 - The OCR-enhanced script is available at `scripts/wiki_integrator_with_ocr.py`.
 
 ### 2. Managing the Wiki
@@ -197,7 +191,8 @@ This produces good results on Windows, macOS, and Linux. Supported formats:
 |------|--------|
 | **Reviewing Content** | Open the `wiki/` folder in SilverBullet+ to browse your interlinked knowledge base |
 | **Auditing** | Ask Cline to *"lint the wiki"* to find broken links, orphans, or formatting errors |
-| **Iterating** | Ask Cline to improve the `wiki_integrator.py` script if extraction isn't perfect |
+| **Iterating** | Ask Cline to improve the `wiki_integrator.py` or `wiki_integrator_with_ocr.py` script if extraction isn't working |
+| **Cleanup** | Ask Cline to cleanup the Markdown formatting of a wiki page if formatting was lost or corrupted during exctraction |
 
 ---
 
