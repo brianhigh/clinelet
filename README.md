@@ -194,6 +194,9 @@ This produces good results on Windows, macOS, and Linux.
 | **Iterating** | Ask Cline to improve the `wiki_integrator.py` or `wiki_integrator_with_ocr.py` script if extraction isn't working |
 | **Cleanup** | Ask Cline to cleanup the Markdown formatting of a wiki page if formatting was lost or corrupted during exctraction |
 
+Example cleanup prompt:
+> Clean up the markdown of the OCR'd \<FILE\> . Don't worry about the unreadable sections, just focus on what's mostly readable.
+
 ---
 
 ## 📄 License
