@@ -105,7 +105,7 @@ Notes:
   - I tried this and got good results on Windows, macOS and Linux. Supports gif, png, and jpeg as well.
     - See `scripts/wiki_integrator_with_ocr.py`.
     - You need to install some dependencies: tesseract OCR and poppler. Do a web search (or ask an LLM):
-      - "how to install tesseract and poppler on windows"
+      - "how to install tesseract and poppler on windows" ... and make sure to add these to your PATH environment variable
       - "how to install tesseract and poppler on macos with homebrew"
       - ... or similar for your Linux distribution
 
