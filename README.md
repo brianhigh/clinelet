@@ -2,7 +2,7 @@
 
 **Transform the VS Code Cline Extension into an automated "Living LLM Wiki" curator agent.**
 
-`clinelet` provides a set of specialized [Cline Rules](https://docs.cline.bot/customization/cline-claude-rules) designed to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base — optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app.
+`clinelet` provides a set of specialized [Cline Rules](https://docs.cline.bot/customization/cline-claude-rules) and an import script designed to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base — optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app. However, the rules and script can be used with almost any agent harness and wiki browser.
 
 Following the organizational principles proposed by [Andrej Karpathy](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), this setup creates a "Living LLM Wiki" — a dense web of interconnected Markdown pages that enable easy discovery and connection between disparate ideas.
 
