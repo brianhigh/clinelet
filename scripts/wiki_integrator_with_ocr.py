@@ -4,12 +4,159 @@ import sys
 import subprocess
 import tempfile
 import shutil
+import platform
 
 # Constants
 RAW_DIR = "raw"
 SPACE_DIR = "wiki"
 STATE_DIR = ".clinelet"
 MANIFEST_PATH = os.path.join(STATE_DIR, "processed_files.txt")
+
+# Dependency tracking
+MISSING_DEPENDENCIES = []
+
+def get_os_info():
+    """Detect the operating system and return appropriate package manager info.
+    
+    Returns a dict with:
+        - os_type: 'linux', 'darwin', 'windows'
+        - primary_cmd: Primary install command template
+        - alternatives: List of (cmd, label) tuples for alternative managers
+    """
+    system = platform.system()
+    
+    if system == "Linux":
+        # Detect which package managers are available
+        alternatives = []
+        primary_cmd = None
+        
+        # Check for apt (Debian/Ubuntu)
+        if shutil.which("apt"):
+            primary_cmd = "sudo apt install {package}"
+        # Check for dnf (Fedora/RHEL)
+        elif shutil.which("dnf"):
+            primary_cmd = "sudo dnf install {package}"
+        # Check for yum (older Fedora/RHEL)
+        elif shutil.which("yum"):
+            primary_cmd = "sudo yum install {package}"
+        # Check for pacman (Arch)
+        elif shutil.which("pacman"):
+            primary_cmd = "sudo pacman -S {package}"
+        # Check for zypper (openSUSE)
+        elif shutil.which("zypper"):
+            primary_cmd = "sudo zypper install {package}"
+        
+        # Add alternatives if we have a primary
+        if primary_cmd:
+            if "apt" in primary_cmd:
+                alternatives = [
+                    ("sudo dnf install {package}", "Fedora/RHEL"),
+                    ("sudo yum install {package}", "Older Fedora/RHEL"),
+                    ("sudo pacman -S {package}", "Arch Linux"),
+                    ("sudo zypper install {package}", "openSUSE"),
+                ]
+            elif "dnf" in primary_cmd:
+                alternatives = [
+                    ("sudo apt install {package}", "Debian/Ubuntu"),
+                    ("sudo pacman -S {package}", "Arch Linux"),
+                ]
+            elif "pacman" in primary_cmd:
+                alternatives = [
+                    ("sudo apt install {package}", "Debian/Ubuntu"),
+                    ("sudo dnf install {package}", "Fedora/RHEL"),
+                ]
+        
+        if primary_cmd is None:
+            primary_cmd = "sudo <package-manager> install {package}  # Detect your package manager (apt/dnf/pacman/zypper)"
+            alternatives = [
+                ("sudo apt install {package}", "Debian/Ubuntu"),
+                ("sudo dnf install {package}", "Fedora/RHEL"),
+                ("sudo pacman -S {package}", "Arch Linux"),
+                ("sudo zypper install {package}", "openSUSE"),
+            ]
+        
+        return {
+            "os_type": "linux",
+            "primary_cmd": primary_cmd,
+            "alternatives": alternatives,
+        }
+    
+    elif system == "Darwin":
+        # macOS
+        alternatives = []
+        primary_cmd = None
+        
+        # Check for brew (Homebrew)
+        if shutil.which("brew"):
+            primary_cmd = "brew install {package}"
+            alternatives = [
+                ("sudo port install {package}", "MacPorts"),
+            ]
+        # Check for port (MacPorts)
+        elif shutil.which("port"):
+            primary_cmd = "sudo port install {package}"
+            alternatives = [
+                ("brew install {package}", "Homebrew"),
+            ]
+        
+        if primary_cmd is None:
+            primary_cmd = "brew install {package}  # Install Homebrew: https://brew.sh"
+            alternatives = [
+                ("sudo port install {package}", "MacPorts"),
+            ]
+        
+        return {
+            "os_type": "darwin",
+            "primary_cmd": primary_cmd,
+            "alternatives": alternatives,
+        }
+    
+    elif system == "Windows":
+        # Windows
+        alternatives = []
+        primary_cmd = None
+        
+        # Check for winget
+        if shutil.which("winget"):
+            primary_cmd = "winget install {package}"
+            alternatives = [
+                ("choco install {package}", "Chocolatey"),
+                ("scoop install {package}", "Scoop"),
+            ]
+        # Check for choco (Chocolatey)
+        elif shutil.which("choco"):
+            primary_cmd = "choco install {package}"
+            alternatives = [
+                ("winget install {package}", "winget"),
+                ("scoop install {package}", "Scoop"),
+            ]
+        # Check for scoop
+        elif shutil.which("scoop"):
+            primary_cmd = "scoop install {package}"
+            alternatives = [
+                ("winget install {package}", "winget"),
+                ("choco install {package}", "Chocolatey"),
+            ]
+        
+        if primary_cmd is None:
+            primary_cmd = "winget install {package}  # Install winget: https://microsoft.github.io/winget"
+            alternatives = [
+                ("choco install {package}", "Chocolatey"),
+                ("scoop install {package}", "Scoop"),
+            ]
+        
+        return {
+            "os_type": "windows",
+            "primary_cmd": primary_cmd,
+            "alternatives": alternatives,
+        }
+    
+    else:
+        return {
+            "os_type": "unknown",
+            "primary_cmd": "{package_manager} install {package}",
+            "alternatives": [],
+        }
 
 def load_manifest():
     """Loads processed filenames and ensures state directory exists."""
@@ -343,6 +490,125 @@ def process_file(file_path, filename):
         print(f"[ERROR] Critical error processing {filename}: {e}")
         return False
 
+def check_python_module(module_name, import_name=None, install_name=None):
+    """Check if a Python module is available. Returns True if found.
+    
+    Args:
+        module_name: The module import name (e.g., 'PIL')
+        import_name: The actual import name if different from module_name
+        install_name: The pip install name if different from module_name
+    
+    Adds to MISSING_DEPENDENCIES if not found.
+    """
+    if import_name is None:
+        import_name = module_name
+    if install_name is None:
+        install_name = module_name
+    
+    try:
+        __import__(import_name)
+        return True
+    except ImportError:
+        MISSING_DEPENDENCIES.append({
+            "type": "python",
+            "module": module_name,
+            "install": install_name,
+            "description": f"Python module '{module_name}'"
+        })
+        return False
+
+
+def check_system_tool(tool_name, package_name=None):
+    """Check if a system tool is available. Returns True if found.
+    
+    Args:
+        tool_name: The executable name (e.g., 'tesseract')
+        package_name: The system package name for installation instructions.
+                      If None, uses tool_name as the package name.
+    
+    Adds to MISSING_DEPENDENCIES if not found. Uses OS-specific install commands.
+    """
+    if shutil.which(tool_name) or _find_tool(tool_name):
+        return True
+    
+    if package_name is None:
+        package_name = tool_name
+    
+    # Get OS-specific install commands
+    os_info = get_os_info()
+    
+    # Build the install command using the primary package manager
+    primary_cmd = os_info["primary_cmd"].format(package=package_name)
+    
+    # Store alternatives for the user
+    alt_commands = [cmd.format(package=package_name) for cmd, label in os_info["alternatives"]]
+    
+    MISSING_DEPENDENCIES.append({
+        "type": "system",
+        "tool": tool_name,
+        "package": package_name,
+        "install_cmd": primary_cmd,
+        "alternatives": alt_commands,
+        "description": f"System tool '{tool_name}' (package: {package_name})"
+    })
+    return False
+
+
+def print_dependency_report():
+    """Print a report of all missing dependencies with installation instructions."""
+    if not MISSING_DEPENDENCIES:
+        print("[✓] All dependencies are installed.")
+        return False
+    
+    os_info = get_os_info()
+    
+    print("\n" + "=" * 60)
+    print("[!] MISSING DEPENDENCIES DETECTED")
+    print("=" * 60)
+    print(f"\nDetected OS: {os_info['os_type'].title()}")
+    print("The following dependencies are missing. Install them to enable")
+    print("full functionality of the wiki integrator.\n")
+    
+    # Group by type
+    python_deps = [d for d in MISSING_DEPENDENCIES if d["type"] == "python"]
+    system_deps = [d for d in MISSING_DEPENDENCIES if d["type"] == "system"]
+    
+    if python_deps:
+        print("Python Modules:")
+        print("-" * 40)
+        for dep in python_deps:
+            print(f"  - {dep['description']}:")
+            print(f"    Install: pip install {dep['install']}")
+        print()
+    
+    if system_deps:
+        print("System Packages:")
+        print("-" * 40)
+        for dep in system_deps:
+            print(f"  - {dep['description']}:")
+            print(f"    Install: {dep['install_cmd']}")
+            # Provide alternative install commands from OS detection
+            if dep.get("alternatives"):
+                print("    Alternatives:")
+                for alt in dep["alternatives"]:
+                    print(f"      - {alt}")
+        print()
+    
+    print("Quick install all Python modules:")
+    if python_deps:
+        pip_packages = " ".join(set(d["install"] for d in python_deps))
+        print(f"  pip install {pip_packages}")
+    print()
+    
+    if system_deps:
+        packages = " ".join(set(d["package"] for d in system_deps))
+        print(f"Quick install all system packages:")
+        print(f"  {os_info['primary_cmd'].format(package=packages)}")
+    print("=" * 60 + "\n")
+    
+    return True
+
+
 def main():
     # Verify source
     if not os.path.exists(RAW_DIR):
@@ -354,6 +620,25 @@ def main():
         if not os.path.exists(d):
             os.makedirs(d)
 
+    # --- Dependency Check ---
+    print("[*] Checking dependencies...")
+    
+    # Check Python modules
+    check_python_module("PIL", "PIL", "Pillow")
+    check_python_module("pypdf", "pypdf", "pypdf")
+    check_python_module("docx", "docx", "python-docx")
+    check_python_module("openpyxl", "openpyxl", "openpyxl")
+    check_python_module("pptx", "pptx", "python-pptx")
+    
+    # Check system tools (package names only - OS-specific commands are auto-detected)
+    check_system_tool("tesseract", "tesseract-ocr")
+    check_system_tool("pdftoppm", "poppler-utils")
+    check_system_tool("pdftocairo", "poppler-utils")
+    check_system_tool("magick", "imagemagick")
+    
+    # Print dependency report
+    has_missing = print_dependency_report()
+    
     # Set up tesseract environment before processing
     tesseract_path = _find_tool("tesseract")
     if tesseract_path:
