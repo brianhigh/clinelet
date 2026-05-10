@@ -86,10 +86,6 @@ Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, e
 
 > process @/raw with @/scripts/wiki_integrator.py
 
-Or simply:
-
-> process raw
-
 And after processing, if the new pages lack formatting (sections, lists, tables, links, etc.):
 
 > improve the markdown formatting of the new pages, condense long pages, and interlink with other pages
@@ -106,7 +102,12 @@ Notes:
 - If you want to reimport "raw" documents, remove the filename for them from `.clinelet/processed_files.txt` first.
 - If you want to add OCR support for image-based PDFs, you can prompt your agent to add this feature:
 > Add support for image-based PDFs by including OCR capabilities into @/scripts/wiki_integrator.py
-  - I tried this and got good results on macOS and Linux. Supports gif, png, and jpeg as well. See: `scripts/wiki_integrator_with_ocr.py`.
+  - I tried this and got good results on Windows, macOS and Linux. Supports gif, png, and jpeg as well.
+    - See `scripts/wiki_integrator_with_ocr.py`.
+    - You need to install some dependencies: tesseract OCR and poppler. Do a web search:
+      - "how to install tesseract and poppler on windows"
+      - "how to install tesseract and poppler on macos with homebrew"
+      - ... or similar for your Linux distribution
 
 ### 2. Managing the Wiki
 - **Reviewing Content:** Open the `wiki/` folder in the SilverBullet+ app to browse your interlinked knowledge base.
