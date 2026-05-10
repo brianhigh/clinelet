@@ -63,5 +63,4 @@ A form of zero-based thinking to clear your decks:
 * **Inside-Out/Outside-In:** Either start with the core (most important) part of a task or start with small peripheral tasks to build rhythm.
 
 ## Conclusion
-The ultimate question for productivity is: **"What is the most valuable use of my time right now?"** By constantly asking this and focusing on 
-your "A1" task, you can transform your productivity and achieve extraordinary results.
+The ultimate question for productivity is: **"What is the most valuable use of my time right now?"** By constantly asking this and focusing on your "A1" task, you can transform your productivity and achieve extraordinary results.
