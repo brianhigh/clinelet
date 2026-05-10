@@ -56,6 +56,122 @@ def get_unique_path(target_dir, filename):
         counter += 1
     return target_path
 
+def _find_tool(name):
+    """Find a tool by searching PATH first, then common installation directories.
+    Returns the full path to the tool or None if not found.
+    Designed to be portable across different systems.
+    """
+    # First try PATH
+    result = shutil.which(name)
+    if result:
+        return result
+    
+    # Common Windows installation directories to search
+    search_dirs = [
+        r"C:\Program Files",
+        r"C:\Program Files (x86)",
+        r"C:\ProgramData",
+        os.environ.get("LOCALAPPDIR", ""),
+        os.environ.get("PROGRAMFILES", ""),
+        os.environ.get("PROGRAMFILES(X86)", ""),
+        os.environ.get("PROGRAMW6432", ""),
+    ]
+    
+    # Filter out empty entries
+    search_dirs = [d for d in search_dirs if d and os.path.isdir(d)]
+    
+    # Tool-specific search patterns
+    tool_patterns = {
+        "tesseract": [
+            r"Tesseract-OCR\tesseract.exe",
+        ],
+        "pdftoppm": [
+            r"poppler\Library\bin\pdftoppm.exe",
+            r"poppler\bin\pdftoppm.exe",
+            r"poppler-*/bin\pdftoppm.exe",
+            r"Poppler\Library\bin\pdftoppm.exe",
+            r"Poppler\bin\pdftoppm.exe",
+        ],
+        "pdftocairo": [
+            r"poppler\Library\bin\pdftocairo.exe",
+            r"poppler\bin\pdftocairo.exe",
+            r"poppler-*/bin\pdftocairo.exe",
+            r"Poppler\Library\bin\pdftocairo.exe",
+            r"Poppler\bin\pdftocairo.exe",
+        ],
+    }
+    
+    patterns = tool_patterns.get(name, [f"{name}.exe" if os.name == 'nt' else name])
+    
+    for search_dir in search_dirs:
+        for pattern in patterns:
+            # Handle wildcard patterns like poppler-*
+            if '*' in pattern:
+                # Get the base directory and wildcard part
+                base_subdir = pattern.split('/')[0] if '/' in pattern else pattern
+                full_search = os.path.join(search_dir, base_subdir)
+                if os.path.isdir(full_search):
+                    for item in os.listdir(full_search):
+                        candidate = os.path.join(search_dir, item, *pattern.split('/')[1:])
+                        if os.path.exists(candidate):
+                            return candidate
+            else:
+                candidate = os.path.join(search_dir, pattern)
+                if os.path.exists(candidate):
+                    return candidate
+    
+    return None
+
+def get_tesseract_data_dir(tesseract_path):
+    """Find the tessdata directory for a given tesseract installation.
+    Returns the path to the tessdata directory or None.
+    """
+    tesseract_dir = os.path.dirname(tesseract_path)
+    tessdata = os.path.join(tesseract_dir, "tessdata")
+    if os.path.isdir(tessdata) and os.path.exists(os.path.join(tessdata, "eng.traineddata")):
+        return tessdata
+    
+    # Also search parent directories
+    parent = os.path.dirname(tesseract_dir)
+    tessdata = os.path.join(parent, "tessdata")
+    if os.path.isdir(tessdata) and os.path.exists(os.path.join(tessdata, "eng.traineddata")):
+        return tessdata
+    
+    return None
+
+def set_tesseract_env(tesseract_path):
+    """Set TESSDATA_PREFIX environment variable for tesseract.
+    Returns True if successful, False otherwise.
+    """
+    tessdata_dir = get_tesseract_data_dir(tesseract_path)
+    if tessdata_dir:
+        os.environ["TESSDATA_PREFIX"] = tessdata_dir
+        return True
+    print("[!] Warning: Could not find tessdata directory for tesseract")
+    return False
+
+def ocr_image(file_path):
+    """OCR on an image file using tesseract, writing to temp file to avoid stdout issues on old versions."""
+    tesseract_path = _find_tool("tesseract")
+    if tesseract_path is None:
+        print("[!] tesseract not found in PATH")
+        return None
+    with tempfile.TemporaryDirectory() as tmpdir:
+        base_path = os.path.join(tmpdir, "ocr_output")
+        result = subprocess.run(
+            [tesseract_path, file_path, base_path],
+            capture_output=True,
+            text=True
+        )
+        if result.returncode != 0:
+            return None
+        txt_path = base_path + ".txt"
+        if os.path.exists(txt_path):
+            with open(txt_path, 'r', encoding='utf-8') as f:
+                return f.read().strip()
+    return None
+
+
 def process_file(file_path, filename):
     """Extracts text and saves to markdown. Returns False if skipped/failed."""
     new_filename = to_snake_case(filename)
@@ -83,8 +199,10 @@ def process_file(file_path, filename):
                 if not content:
                     print(f"[*] PDF '{filename}' has no text layer. Attempting OCR...")
                     try:
-                        pdftoppm_path = shutil.which("pdftoppm") or "/usr/bin/pdftoppm"
-                        tesseract_path = shutil.which("tesseract") or "/usr/bin/tesseract"
+                        pdftoppm_path = _find_tool("pdftoppm")
+                        if pdftoppm_path is None:
+                            print("[!] pdftoppm not found in PATH. Install poppler for PDF OCR support.")
+                            return False
 
                         with tempfile.TemporaryDirectory() as tmpdir:
                             prefix = os.path.join(tmpdir, "page")
@@ -107,13 +225,8 @@ def process_file(file_path, filename):
                             ocr_contents = []
                             for _, img_name in image_files:
                                 img_path = os.path.join(tmpdir, img_name)
-                                result = subprocess.run(
-                                    [tesseract_path, img_path, "-"],
-                                    check=True,
-                                    capture_output=True,
-                                    text=True
-                                )
-                                ocr_contents.append(result.stdout.strip())
+                                ocr_text = ocr_image(img_path)
+                                ocr_contents.append(ocr_text if ocr_text else "")
                             
                             content = "\n".join(ocr_contents).strip()
                             
@@ -129,23 +242,13 @@ def process_file(file_path, filename):
                 print(f"[-] Missing 'pypdf'. Skipping: {filename}")
                 return False
 
-        elif ext in [".png", ".jpg", ".jpeg", ".gif"]:
-            try:
-                tesseract_path = shutil.which("tesseract") or "/usr/bin/tesseract"
-                result = subprocess.run(
-                    [tesseract_path, file_path, "-"],
-                    check=True,
-                    capture_output=True,
-                    text=True
-                )
-                content = result.stdout.strip()
-                if not content:
-                    print(f"[!] OCR failed to extract text from {filename}")
-                    return False
-                else:
-                    print(f"[+] OCR successful for {filename}")
-            except (subprocess.CalledProcessError, FileNotFoundError, Exception) as e:
-                print(f"[-] OCR failed for {filename}: {e}")
+        elif ext in [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".tif", ".webp"]:
+            ocr_text = ocr_image(file_path)
+            if ocr_text:
+                content = ocr_text
+                print(f"[+] OCR successful for {filename}")
+            else:
+                print(f"[!] OCR failed to extract text from {filename}")
                 return False
 
         elif ext == ".docx":
@@ -215,6 +318,21 @@ def main():
     for d in [SPACE_DIR, STATE_DIR]:
         if not os.path.exists(d):
             os.makedirs(d)
+
+    # Set up tesseract environment before processing
+    tesseract_path = _find_tool("tesseract")
+    if tesseract_path:
+        print(f"[*] Found tesseract: {tesseract_path}")
+        if set_tesseract_env(tesseract_path):
+            print(f"[*] TESSDATA_PREFIX set for tesseract")
+    else:
+        print("[!] Warning: tesseract not found. PDF/image OCR will not work.")
+
+    pdftoppm_path = _find_tool("pdftoppm")
+    if pdftoppm_path:
+        print(f"[*] Found pdftoppm: {pdftoppm_path}")
+    else:
+        print("[!] Warning: pdftoppm not found. PDF OCR will not work.")
 
     processed_files = load_manifest()
     

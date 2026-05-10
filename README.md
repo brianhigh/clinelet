@@ -66,7 +66,7 @@ Or you can let the agent (Cline) do this for you if it realizes they are missing
      - Use a context size of at least 64k for local models (the more the better).
      - Ensure the model supports **tool use**
      - And when using locally hosted LLMs:
-       - A model like qwen3.5:9b works okay, but use a larger model (like gemma4:26b) if you can
+       - A model like qwen3.5:9b works okay, but use a larger model (like gemma4:26b or qwen3.6:35b) if you can
        - If your model is running too slowly, try a smaller model (like qwen3.5:4b) with a larger context size (like 128k).
        - If have an "Apple Silicon" M-series processer and less than 32 GB unified memory, use LM Studio to serve MLX-quantized models for ~2x speed over Ollama (GGUF).
    - For Auto-approve, enable: 
@@ -102,12 +102,13 @@ Notes:
 - If you want to reimport "raw" documents, remove the filename for them from `.clinelet/processed_files.txt` first.
 - If you want to add OCR support for image-based PDFs, you can prompt your agent to add this feature:
 > Add support for image-based PDFs by including OCR capabilities into @/scripts/wiki_integrator.py
-  - I tried this and got good results on Windows, macOS and Linux. Supports gif, png, and jpeg as well.
+  - I tried this and got good results on Windows, macOS and Linux. Supports:
+    ".pdf", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".tif", ".webp" on Windows, macOS and Linux
     - See `scripts/wiki_integrator_with_ocr.py`.
     - You need to install some dependencies: tesseract OCR and poppler. Do a web search (or ask an LLM):
-      - "how to install tesseract and poppler on windows" ... and make sure to add these to your PATH environment variable
-      - "how to install tesseract and poppler on macos with homebrew"
-      - ... or similar for your Linux distribution
+      - "how to install tesseract and poppler on windows with chocolatey or winget"
+      - "how to install tesseract and poppler on macos with homebrew or macports"
+      - ... or similar for your Linux distribution using its native package manager
 
 ### 2. Managing the Wiki
 - **Reviewing Content:** Open the `wiki/` folder in the SilverBullet+ app to browse your interlinked knowledge base.
