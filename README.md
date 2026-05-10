@@ -174,7 +174,7 @@ This produces good results on Windows, macOS, and Linux.
 
 | Supported Formats |
 |-------------------|
-| `.pdf`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.bmp`, `.webp` |
+| `.pdf`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp` |
 
 **Requirements:**
 
