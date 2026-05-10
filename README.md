@@ -215,11 +215,11 @@ And the agent will create a page like this:
 </a>
 
 ---
-\---
-tags: \[todo, weekly, task-management\]
+```
+tags: [todo, weekly, task-management]
 last_modified: 2026-05-10
 done: false
-\---
+```
 # Weekly Todo — May 11, 2026
 
 - **Summary**: Weekly task list for the coming week.
