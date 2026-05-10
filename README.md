@@ -180,7 +180,7 @@ This produces good results on Windows, macOS, and Linux.
 
 - Install **Tesseract OCR**, **Poppler**, and **ImageMagick** dependencies.
 - Install via web search (or ask an LLM):
-  - *"how to install Tesseract, Poppler, and ImageMagick on Windows with Chocolatey or Winget""*
+  - *"how to install Tesseract, Poppler, and ImageMagick on Windows with Chocolatey or Winget"*
   - *"how to install Tesseract, Poppler, and ImageMagick on macOS with Homebrew or MacPorts"*
   - Linux users should use their distribution's native package manager.
 - The OCR-enhanced script is available at `scripts/wiki_integrator_with_ocr.py`.
