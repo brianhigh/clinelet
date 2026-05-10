@@ -49,7 +49,7 @@ Ensure the following tools are installed on your system:
 | [Visual Studio Code](https://code.visualstudio.com/) | Editor |
 | [Cline Extension](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) | VS Code extension |
 | [SilverBullet+ App](https://silverbullet.plus/) | Wiki viewer |
-| [Python 3.x](https://www.python.org/) | Scripting runtime (Miniconda recommended) |
+| [Python 3.x](https://www.python.org/) | Scripting runtime ([Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) recommended) |
 
 ### Additional Python Packages
 
