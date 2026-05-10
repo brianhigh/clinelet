@@ -7,9 +7,7 @@ last_modified: 2026-05-08
 - **Sources**: [The Truth About Frogs](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/)
 
 ## Overview
-Brian Tracy's ["Eat That Frog!"](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/) is a productivity philosophy and time 
-management technique based on the idea that the most important and often most daunting task (your "frog") should be tackled first thing in the 
-morning. By prioritizing high-value activities and eliminating distractions, you can maximize your results and achieve your goals faster.
+Brian Tracy's ["Eat That Frog!"](https://www.briantracy.com/blog/time-management/the-truth-about-frogs/) is a productivity philosophy and time management technique based on the idea that the most important and often most daunting task (your "frog") should be tackled first thing in the morning. By prioritizing high-value activities and eliminating distractions, you can maximize your results and achieve your goals faster.
 
 ## Key Themes
 
