@@ -196,7 +196,7 @@ This produces good results on Windows, macOS, and Linux.
 
 Example cleanup prompt:
 ```
-Clean up the markdown of \<FILE\>. Don't worry about unreadable sections, just focus on what's mostly readable.
+Clean up the markdown of <FILE>. Don't worry about unreadable sections, just focus on what's mostly readable.
 ```
 
 ---
