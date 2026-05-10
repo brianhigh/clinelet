@@ -205,7 +205,7 @@ You can use this extended prompt to process all supported filetypes and cleanup 
 Start with a prompt like:
 
 ```
-Create a weekly todo lost for next week: wiki/weekly_todo_2026_05_11.md
+Create a weekly todo list for next week: wiki/weekly_todo_2026_05_11.md
 ```
 
 And the agent will create a page like this:
