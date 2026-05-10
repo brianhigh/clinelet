@@ -151,15 +151,50 @@ def set_tesseract_env(tesseract_path):
     return False
 
 def ocr_image(file_path):
-    """OCR on an image file using tesseract, writing to temp file to avoid stdout issues on old versions."""
+    """OCR on an image file using tesseract, with pre-conversion to 8-bit RGB to avoid Tesseract/Leptonica issues."""
     tesseract_path = _find_tool("tesseract")
     if tesseract_path is None:
         print("[!] tesseract not found in PATH")
         return None
+    
+    magick_path = shutil.which("magick")
+    
     with tempfile.TemporaryDirectory() as tmpdir:
+        converted_img_path = os.path.join(tmpdir, "converted_image.png")
+        conversion_success = False
+
+        # Try Pillow first
+        try:
+            from PIL import Image
+            with Image.open(file_path) as img:
+                rgb_img = img.convert("RGB")
+                rgb_img.save(converted_img_path, "PNG")
+            conversion_success = True
+        except Exception as e:
+            print(f"[*] Pillow conversion failed for {file_path}, trying ImageMagick: {e}")
+            
+            # Fallback to ImageMagick
+            if magick_path:
+                try:
+                    result = subprocess.run(
+                        [magick_path, file_path, converted_img_path],
+                        capture_output=True,
+                        text=True,
+                        check=True
+                    )
+                    conversion_success = True
+                except subprocess.CalledProcessError as err:
+                    print(f"[!] ImageMagick conversion failed for {file_path}: {err.stderr}")
+            else:
+                print("[!] ImageMagick (magick) not found in PATH. Cannot fallback.")
+
+        if not conversion_success:
+            print(f"[!] Failed to convert image {file_path} for OCR using both Pillow and ImageMagick.")
+            return None
+
         base_path = os.path.join(tmpdir, "ocr_output")
         result = subprocess.run(
-            [tesseract_path, file_path, base_path],
+            [tesseract_path, converted_img_path, base_path],
             capture_output=True,
             text=True
         )

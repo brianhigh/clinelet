@@ -174,14 +174,14 @@ This produces good results on Windows, macOS, and Linux.
 
 | Supported Formats |
 |-------------------|
-| `.pdf`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp` |
+| `.pdf`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.tif`, `.tiff`, `.bmp` |
 
 **Requirements:**
 
-- Install **Tesseract OCR** and **Poppler** dependencies.
+- Install **Tesseract OCR**, **Poppler**, and **ImageMagick** dependencies.
 - Install via web search (or ask an LLM):
-  - *"how to install tesseract and poppler on Windows with Chocolatey or Winget"*
-  - *"how to install tesseract and poppler on macOS with Homebrew or MacPorts"*
+  - *"how to install Tesseract, Poppler, and ImageMagick on Windows with Chocolatey or Winget""*
+  - *"how to install Tesseract, Poppler, and ImageMagick on macOS with Homebrew or MacPorts"*
   - Linux users should use their distribution's native package manager.
 - The OCR-enhanced script is available at `scripts/wiki_integrator_with_ocr.py`.
 
