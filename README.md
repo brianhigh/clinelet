@@ -200,6 +200,66 @@ You can use this extended prompt to process all supported filetypes and cleanup 
 | **Iterating** | Ask Cline to improve the `wiki_integrator.py` or `wiki_integrator_with_ocr.py` script if extraction isn't working |
 | **Cleanup** | Ask Cline to cleanup the Markdown formatting of a wiki page if formatting was lost or corrupted during exctraction |
 
+### 3. Making Todo Lists
+
+Start with a prompt like:
+
+```
+Create a weekly todo lost for next week: wiki/weekly_todo_2026_05_11.md
+```
+
+And the agent will create a page like this:
+
+<a href="images/SilverBullet_Screenshot_weekly_todo_20260511.png">
+  <img src="images/SilverBullet_Screenshot_weekly_todo_20260511_thumb.png" alt="Weekly Todo Screenshot" width="183">
+</a>
+
+---
+\---
+tags: \[todo, weekly, task-management\]
+last_modified: 2026-05-10
+done: false
+\---
+# Weekly Todo — May 11, 2026
+
+- **Summary**: Weekly task list for the coming week.
+
+## 🐸 Eat That Frog (Top Priorities)
+
+These are the most important tasks — do them first.
+
+- [ ] **Create AI tools living document** — Compile recommended AI tools with one-sentence descriptions (community need from Coders AI Meeting)
+- [ ] **Draft data security guide** — Create guide covering public / confidential / HIPAA data sensitivity levels
+
+## 📋 Wiki Maintenance
+
+- [ ] Review and expand orphaned pages (pages with no inbound links)
+- [ ] Add missing concept pages referenced in [[brackets]] but not yet created:
+  - [[vibe_coding]]
+  - [[generative_ai]]
+- [ ] Audit wiki for contradictions between pages
+
+## 🛠️ Community Sessions
+
+- [ ] **Plan VS Code setup workshop** — Prepare live workshop for students and staff (requested by community)
+- [ ] **Prepare AI security & data privacy session** — Build on UW GenAI guidelines content
+- [ ] **Prepare synthetic data generation session** — Techniques for HIPAA-restricted datasets
+
+## 💰 Administrative
+
+- [ ] Review GhostInspector subscription renewal
+
+## 📚 Learning & Reference
+
+- [ ] Review BBoP (Big Book of Prompts) from UW Prompt-a-Thon workshop
+- [ ] Explore local LLM setup via Ollama for privacy-sensitive tasks
+
+## Notes
+
+- Use the **baby steps** approach: break complex tasks into small, sequential actions.
+- Apply **second opinions**: have a different model review work when possible.
+
+
 ---
 
 ## 📄 License
