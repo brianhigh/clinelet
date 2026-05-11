@@ -10,6 +10,7 @@ All operations must respect the following organization:
 * `wiki/`: Markdown pages maintained by you.
 * `wiki/index.md`: The central Table of Contents.
 * `wiki/log.md`: Append-only record of all wiki operations.
+* `.clinelet/processed_files.txt`: Append-only list of processed files. **Never delete.**
 
 ## 2. Ingest Workflow
 
