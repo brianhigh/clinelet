@@ -13,7 +13,7 @@ else
 fi
 
 # Find a suitable font
-font=$("$IM" -list font 2>/dev/null | awk -F': ' '/Font: .*Open-?Sans/ {print $2; exit}')
+font=$("$IM" -list font 2>/dev/null | awk -F': ' '/Font: .*(Open|Ubuntu|Noto|Nimbus|Liberation)-?Sans/ {print $2; exit}' || true)
 [[ -z "$font" && -f /System/Library/Fonts/Monaco.ttf ]] && font=/System/Library/Fonts/Monaco.ttf
 [[ -z "$font" && -f /c/Windows/Fonts/verdana.ttf ]] && font=/c/Windows/Fonts/verdana.ttf
 
