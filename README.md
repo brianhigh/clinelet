@@ -176,7 +176,7 @@ To add OCR support for image-based PDFs and various image file formats, use `scr
 
 This produces good results on Windows, macOS, and Linux.
 
-| Supported Formats |
+| Supported Image Formats |
 |-------------------|
 | `.pdf`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.tif`, `.tiff`, `.bmp` |
 
@@ -193,7 +193,7 @@ This produces good results on Windows, macOS, and Linux.
 
 You can use this extended prompt to process all supported filetypes and cleanup and integrate the results:
 
-> Process @/raw with @/scripts/wiki_integrator_with_ocr.py. Make sure all documents in @/raw are converted to wiki pages or notify me those which were not and why. Do **not** delete @/.clinelet/processed_files.txt in this process, as we may need to review this file later. Clean up the markdown of new pages. Don't worry about unreadable sections, just focus on what's mostly readable. Improve the markdown formatting of the new pages, condense (summarize) long pages (e.g., transcripts), and interlink with other pages.
+> Process @/raw with @/scripts/wiki_integrator_with_ocr.py. Make sure all documents in @/raw are converted to wiki pages or notify me those which were not and why. Do **not** delete @/.clinelet/processed_files.txt in this process, as we may need to review this file later, so only append to this file. Clean up the markdown of new pages. Don't worry about unreadable sections, just focus on what's mostly readable. Improve the markdown formatting of the new pages, condense (summarize) long pages (e.g., transcripts), and interlink with other pages.
 
 ### 2. Managing the Wiki
 

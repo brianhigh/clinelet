@@ -16,7 +16,7 @@ between disparate ideas. The wiki content will be stored in your `wiki/` folder.
 When helping me create todo lists for my work and when prioritizing these tasks, we will use
 Brian Tracy’s "Eat That Frog!" method. Your goal is to help me stay focused on my most important
 tasks by applying these prioritization principles to the information we collect. The first key wiki
-page you will find there is `wiki/eat_that_frog_summary.md`. Please read it and integrate the approach into our work going forward.# Project Guidelines
+page you will find there is `wiki/eat_that_frog_summary.md`. Please read it and integrate the approach into our work going forward.
 
 # Project Guidelines
 
