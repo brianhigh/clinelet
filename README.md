@@ -15,7 +15,8 @@ Following the organizational principles proposed by [Andrej Karpathy](https://gi
 **Quick start:**
 1. `git clone` → copy `.clinerules/` (or `AGENTS.md`) and `scripts/` to your workspace
 2. Drop documents into `raw/` → tell Cline: *"process @/raw with @/scripts/wiki_integrator.py"*
-3. Browse results in SilverBullet (or Obisidian, etc.)
+3. Tell Cline: *"improve the markdown formatting of the new pages, condense long pages, and interlink with other pages"*
+4. Browse results (in SilverBullet or Obisidian, etc.)
 
 **Three folders, one job:** `.clinerules/` (agent instructions) + `scripts/` (extraction) + `wiki/` (output).
 
