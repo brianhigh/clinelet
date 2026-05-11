@@ -2,7 +2,7 @@
 
 **Transform the VS Code Cline Extension into an automated "Living LLM Wiki" curator agent.**
 
-`clinelet` provides a set of specialized [Cline Rules](https://docs.cline.bot/customization/cline-claude-rules) and an import script designed to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base — optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app. The rules, scripts, and example prompts provided here can be used with almost any agent harness and wiki browser.
+`clinelet` provides a set of specialized agent instructions and an import script designed to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base — optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app. The agent instructions, scripts, and example prompts provided here can be used with almost any agent harness and wiki browser.
 
 Following the organizational principles proposed by [Andrej Karpathy](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), this setup creates a "Living LLM Wiki" — a dense web of interconnected Markdown pages that enable easy discovery and connection between disparate ideas.
 
@@ -13,12 +13,12 @@ Following the organizational principles proposed by [Andrej Karpathy](https://gi
 **What it does:** Converts documents in `raw/` (PDF, DOCX, PPTX, etc.) into a structured, interlinked Markdown wiki in `wiki/` using VS Code + Cline (any LLM) + SilverBullet (or Obsidian).
 
 **Quick start:**
-1. `git clone` → copy `.clinerules/` (or `AGENTS.md`) and `scripts/` to your workspace
+1. `git clone` → copy `AGENTS.md` and `scripts/` to your workspace
 2. Drop documents into `raw/` → tell Cline: *"process @/raw with @/scripts/wiki_integrator.py"*
 3. Tell Cline: *"improve the markdown formatting of the new pages, condense long pages, and interlink with other pages"*
 4. Browse results in SilverBullet (or Obisidian)
 
-**Three folders, one job:** `.clinerules/` (agent instructions) + `scripts/` (extraction) + `wiki/` (output).
+**Two files, one job:** `AGENTS.md` (agent instructions) + `scripts/wiki_integrator.py` (extraction) + `wiki/` (output).
 
 ---
 
@@ -93,17 +93,15 @@ Create a new directory for your wiki (e.g., `my_wiki/`) with the following struc
 
 ```text
 my_wiki/
-├── .clinerules/        ← Copy from clinelet/.clinerules/
+├── AGENTS.md           ← Copy from clinelet/AGENTS.md
 ├── scripts/            ← Copy from clinelet/scripts/
 ├── raw/                ← Place your source documents here
 └── wiki/               ← Your generated knowledge base
 ```
 
-> **Alternative Agents:** If using another agent framework (Claude Code, Hermes Agent, OpenCode, Codex, etc.), copy `AGENTS.md` to your workspace instead of `.clinerules/`. Cline also recognizes `AGENTS.md`.
-
 ### Step 3: Copy Core Components
 
-Copy the `.clinerules/` (or `AGENTS.md`) and `scripts/` folders from this repository into your new workspace directory.
+Copy the `AGENTS.md` and `scripts/` folders from this repository into your new workspace directory.
 
 ---
 
@@ -134,12 +132,7 @@ Copy the `.clinerules/` (or `AGENTS.md`) and `scripts/` folders from this reposi
 
 ### Step 2: Customize Rules (Optional)
 
-Review and edit the following files to align with your specific workflow:
-
-- `.clinerules/personal_agent.md`
-- `.clinerules/project_guidelines.md`
-
-Or, alternatively:
+Review and edit the following file to align with your specific workflow:
 
 - `AGENTS.md`
 
