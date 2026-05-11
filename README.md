@@ -10,13 +10,13 @@ Following the organizational principles proposed by [Andrej Karpathy](https://gi
 
 ## tl;dr
 
-**What it does:** Converts documents in `raw/` (PDF, DOCX, PPTX, etc.) into a structured, interlinked Markdown wiki in `wiki/` using VS Code + Cline (any LLM) + SilverBullet.
+**What it does:** Converts documents in `raw/` (PDF, DOCX, PPTX, etc.) into a structured, interlinked Markdown wiki in `wiki/` using VS Code + Cline (any LLM) + SilverBullet (or Obsidian).
 
 **Quick start:**
 1. `git clone` → copy `.clinerules/` (or `AGENTS.md`) and `scripts/` to your workspace
 2. Drop documents into `raw/` → tell Cline: *"process @/raw with @/scripts/wiki_integrator.py"*
 3. Tell Cline: *"improve the markdown formatting of the new pages, condense long pages, and interlink with other pages"*
-4. Browse results (in SilverBullet or Obisidian, etc.)
+4. Browse results in SilverBullet (or Obisidian)
 
 **Three folders, one job:** `.clinerules/` (agent instructions) + `scripts/` (extraction) + `wiki/` (output).
 
