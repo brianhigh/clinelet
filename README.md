@@ -108,7 +108,7 @@ Copy the `.clinerules/` (or `AGENTS.md`) and `scripts/` folders from this reposi
 
    | Scenario | Recommendation |
    |----------|----------------|
-   | General use | `qwen3.5:9b` works; prefer larger models like `gemma4:26b` or `qwen3.6:35b` |
+   | General use | `qwen3.5:9b` works on modest systems; prefer larger models like `gemma4:26b` or `qwen3.6:35b` |
    | Slow performance | Try a smaller model (`qwen3.5:4b`) with a larger context size (`128k`) |
    | Apple Silicon (M-series, <32 GB RAM) | Use [LM Studio](https://lmstudio.ai/download) to serve MLX-quantized models for ~2x speed over Ollama (GGUF) |
 
