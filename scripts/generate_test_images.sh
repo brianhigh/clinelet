@@ -11,6 +11,9 @@ fi
 
 # Find a suitable font
 font=$(magick -list font | awk -F': ' '/Font: [Oo]pen-?[Ss]ans/ {print $2; exit}')
+[[ -z "$font" && -f /System/Library/Fonts/Monaco.ttf ]] && font=/System/Library/Fonts/Monaco.ttf
+[[ -z "$font" && -f /c/Windows/Fonts/verdana.ttf ]] && font=/c/Windows/Fonts/verdana.ttf
+ 
 
 # Define target image formats
 formats=(pdf png jpg jpeg gif bmp tiff tif webp)
@@ -30,7 +33,7 @@ for ext in pdf png jpg jpeg gif bmp tiff tif webp; do
     fi
     
     # Run the generation
-    magick "${opts[@]}" label:"This is a test." "test_${ext}.${ext}"
+    magick "${opts[@]}" label:"This is a ${ext} test." "test_${ext}.${ext}"
 done
 
 echo "Done! All test images generated."
