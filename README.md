@@ -1,4 +1,4 @@
-<img align="left" width="64" height="64" src="images/clinelet_logo2_vy_sm.png" style="margin-right: 10px;">
+<img align="left" width="64" height="64" src="images/clinelet_logo_vy_sm.png" style="margin-right: 10px;">
 
 # Clinelet
 **Transform the VS Code Cline Extension into an automated "Living LLM Wiki" curator agent.**
