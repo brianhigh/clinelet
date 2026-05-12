@@ -22,17 +22,24 @@ All operations must respect the following organization:
 * `wiki/`: Markdown pages maintained by you.
 * `wiki/index.md`: The central Table of Contents.
 * `wiki/log.md`: Append-only record of all wiki operations.
-* `.clinelet/processed_files.txt`: Append-only list of processed files. **Never delete.**
 
-## 2. Ingest Workflow
+## 2. Batch Ingest (Raw Folder Processing)
 
-When a new source is added to `raw/`:
+When the user says "process raw" (or similar), run the wiki integrator script to batch-process all new files in `raw/`:
 
-1. **Analyze:** Read the full source document.
-2. **Discuss:** Highlight key takeaways with the user before writing.
-3. **Summarize:** Create a summary page in `wiki/` named after the source.
-4. **Deconstruct:** Create or update concept pages for every major idea/entity found. A single source may impact 10–15 pages.
-5. **Log:** Append an entry to `wiki/log.md` with the date, source name, and a summary of changes.
+**Command:** `python scripts/wiki_integrator_with_ocr.py`
+
+This script will:
+1. Scan `raw/` for files not yet in `.clinelet/processed_files.txt`
+2. Extract text from supported formats (`.md`, `.txt`, `.html`, `.docx`, `.xlsx`, `.pptx`, `.pdf`, images)
+3. Convert and save content to `wiki/` as snake_case markdown files
+4. Log processed filenames to the manifest
+
+**Prerequisites (missing dependencies):**
+- Python: `pip install pypdf python-docx openpyxl python-pptx Pillow`
+- System (Windows): `winget install tesseract-ocr poppler-utils ImageMagick`
+
+If dependencies are missing, the script will report them but continue processing supported formats.
 
 ## 3. Formatting & Naming Rules
 
@@ -86,3 +93,17 @@ When asked to "lint" or "audit" the wiki, provide a numbered list of:
 * **Write in plain, clear language.** No AI fluff.
 * **Always** update `wiki/index.md` and `wiki/log.md` immediately after any page change.
 * **Ambiguity:** If a categorization is unclear, ask the user for guidance rather than guessing.
+
+## 8. Export to HTML
+
+When the user says "export page_name" (or "export wiki page name"), convert the specified wiki markdown file to HTML and save it to the `export/` directory.
+
+**Steps:**
+1. Resolve `page_name` to the corresponding file path (e.g., "log" → `wiki/log.md`).
+2. Check if `scripts/md_to_html.sh` exists and `pandoc` is available.
+3. Run: `bash scripts/md_to_html.sh wiki/page_name.md` (or `pwsh scripts\md_to_html.sh` on Windows if needed).
+4. Verify the output file `export/page_name.html` was created successfully.
+
+**Notes:**
+- If the file doesn't exist in `wiki/`, ask the user to clarify which file to export.
+- If `pandoc` is not installed, offer to use an alternative (e.g., Python-based markdown-to-HTML conversion).
