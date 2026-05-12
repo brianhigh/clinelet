@@ -34,6 +34,7 @@ This script will:
 2. Extract text from supported formats (`.md`, `.txt`, `.html`, `.docx`, `.xlsx`, `.pptx`, `.pdf`, images)
 3. Convert and save content to `wiki/` as snake_case markdown files
 4. Log processed filenames to the manifest
+5. Notify the user of any files which could not be processed and briefly explain why.
 
 **Prerequisites (missing dependencies):**
 - Python: `pip install pypdf python-docx openpyxl python-pptx Pillow`
@@ -61,7 +62,7 @@ Main content with [[snake_case_links]].
 - [[related_link]]
 
 ```
-* **Cleanup:** When extracting content from some file formats, like PDFs, etc., the text/page formatting is often lost so make sure to reformat the content for the wiki pages appropriately instead of simply include raw, unformatted text, and this holds true especially for tabular data which should be formatted into Markdown tables. When the when the user says "and cleanup" (or similar) then improve the markdown formatting of the new pages, condense long pages, and interlink with other pages.
+* **Cleanup:** When extracting content from some file formats, like PDFs, etc., the text/page formatting is often lost so make sure to reformat the content for the wiki pages appropriately instead of simply include raw, unformatted text, and this holds true especially for tabular data which should be formatted into Markdown tables. When the user says "and cleanup" (or similar) then improve the markdown formatting, condense long pages (like transcripts), and interlink with other pages. Don't worry about unreadable sections of extracted text from images; just focus on what's mostly readable.
 
 ## 4. Citation & Veracity
 
