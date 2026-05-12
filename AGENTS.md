@@ -108,3 +108,39 @@ When the user says "export *page_name*" (or "export wiki page *name*"), convert 
 **Notes:**
 - If the file doesn't exist in `wiki/`, ask the user to clarify which file to export.
 - If `pandoc` is not installed, offer to use an alternative (e.g., Python-based markdown-to-HTML conversion).
+
+## 9. Export to Word (.docx)
+
+When the user says "export to word *page_name*" (or "word export *name*"), convert the specified wiki page to Word format and save it to the `export/` directory. The script handles both `.md` and `.html` wiki pages.
+
+**Single page export:**
+```
+python scripts/md_or_html_to_word.py log
+```
+This resolves to `wiki/log.md` and outputs to `export/log.docx`.
+
+**With explicit paths:**
+```
+python scripts/md_or_html_to_word.py wiki/log.md export/log.docx
+```
+
+**Batch export all wiki pages:**
+```
+python scripts/md_or_html_to_word.py --batch
+```
+Converts all `.md` and `.html` files in `wiki/` to `.docx` files in `export/`.
+
+**Custom source/output directories:**
+```
+python scripts/md_or_html_to_word.py --batch --source wiki --output export
+```
+
+**Prerequisites:**
+- Python: `pip install markdown beautifulsoup4 python-docx lxml`
+
+**Notes:**
+- The script auto-strips YAML frontmatter from wiki pages before conversion
+- Markdown tables, code blocks, lists, and formatting are preserved in the output
+- Output goes to `export/` directory by default; use full path to specify custom location
+- File not found errors list available wiki pages to help the user
+- All console output uses ASCII-safe text (no Unicode emoji) for Windows compatibility

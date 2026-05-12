@@ -210,13 +210,19 @@ You can use this prompt to process all supported filetypes and cleanup and integ
 | **Iterating** | Ask Cline to improve the `wiki_integrator.py` or `wiki_integrator_with_ocr.py` script if extraction isn't working |
 | **Cleanup** | Ask Cline to cleanup the Markdown formatting of a wiki page if formatting was lost or corrupted during exctraction |
 
-### 3. Exporting to HTML
+### 3. Exporting to HTML and Word
 
 If you need to send a wiki page with someone else, and if they would prefer HTML over Markdown, you can say:
 
 > Export page_name
 
 ... where *page_name* is the name of the page to export to HTML. The exported HTML file will be in `export/`.
+
+Or if they prefer Word (`docx`) format:
+
+> Export to word page_name
+
+As with HTML, this will write the Word file to `export/`, named like the original page but with a `.docx` file name suffix.
 
 ### 4. Making Todo Lists
 
