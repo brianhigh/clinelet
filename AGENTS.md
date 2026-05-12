@@ -61,7 +61,7 @@ Main content with [[snake_case_links]].
 - [[related_link]]
 
 ```
-* **Cleanup:** When extracting content from some file formats, like PDFs, etc., the text/page formatting is often lost so make sure to reformat the content for the wiki pages appropriately instead of simply include raw, unformatted text, and this holds true especially for tabular data which should be formatted into Markdown tables
+* **Cleanup:** When extracting content from some file formats, like PDFs, etc., the text/page formatting is often lost so make sure to reformat the content for the wiki pages appropriately instead of simply include raw, unformatted text, and this holds true especially for tabular data which should be formatted into Markdown tables. Do this when the when the user says "and cleanup" (or similar).
 
 ## 4. Citation & Veracity
 
