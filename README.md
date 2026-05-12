@@ -18,7 +18,7 @@ Following the organizational principles proposed by [Andrej Karpathy](https://gi
 3. Tell Cline: *"improve the markdown formatting of the new pages, condense long pages, and interlink with other pages"*
 4. Browse results in SilverBullet (or Obsidian)
 
-**Two files, one job:** `AGENTS.md` (agent instructions) + `scripts/wiki_integrator.py` (extraction) + `wiki/` (output).
+**Two files, one job:** `AGENTS.md` (agent instructions) + `scripts/wiki_integrator.py` (extraction) = `wiki/` (output).
 
 ---
 
