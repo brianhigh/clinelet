@@ -1,6 +1,9 @@
-<img src="images/clinelet_logo_vy_sm.png" alt="Left aligned" style="float: left; margin: 0 15px 15px 0; width: 64px; height: auto;"> # Clinelet
+<div>
+  <img src="images/clinelet_logo_vy_sm.png" alt="Logo" style="float: left; margin-right: 15px; width: 64px;">
 
-**Transform the VS Code Cline Extension into an automated "Living LLM Wiki" curator agent.**
+  <h1 style="display: inline;">Clinelet</h1>
+  <p><strong>Transform the VS Code Cline Extension into an automated "Living LLM Wiki" curator agent.</strong></p>
+</div>
 
 `clinelet` provides a set of specialized agent instructions and an import script designed to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base — optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app. The agent instructions, scripts, and example prompts provided here can be used with almost any agent harness and wiki browser.
 
