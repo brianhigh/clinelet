@@ -97,7 +97,7 @@ When asked to "lint" or "audit" the wiki, provide a numbered list of:
 
 ## 8. Export to HTML
 
-When the user says "export page_name" (or "export wiki page *name*"), convert the specified wiki markdown file to HTML and save it to the `export/` directory.
+When the user says "export *page_name*" (or "export wiki page *name*"), convert the specified wiki markdown file to HTML and save it to the `export/` directory.
 
 **Steps:**
 1. Resolve `page_name` to the corresponding file path (e.g., "log" → `wiki/log.md`).
