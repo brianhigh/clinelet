@@ -210,7 +210,15 @@ You can use this prompt to process all supported filetypes and cleanup and integ
 | **Iterating** | Ask Cline to improve the `wiki_integrator.py` or `wiki_integrator_with_ocr.py` script if extraction isn't working |
 | **Cleanup** | Ask Cline to cleanup the Markdown formatting of a wiki page if formatting was lost or corrupted during exctraction |
 
-### 3. Making Todo Lists
+### 3. Exporting to HTML
+
+If you need to send a wiki page with someone else, and if they would prefer HTML over Markdown, you can say:
+
+> Export page_name
+
+... where *page_name* is the name of the page to export to HTML. The exported HTML file will be in `export/`.
+
+### 4. Making Todo Lists
 
 Start with a prompt like:
 
