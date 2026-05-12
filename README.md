@@ -1,4 +1,4 @@
-<img align="left" width="64" height="64" src="images/clinelet_logo_vy_sm.png" style="margin-right: 15px;">
+<img align="left" width="32" height="32" src="images/clinelet_logo_vy_sm.png" style="margin-right: 15px;">
 
 # Clinelet
 
