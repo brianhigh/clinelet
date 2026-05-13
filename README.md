@@ -153,8 +153,9 @@ Review and edit the following file to align with your specific workflow:
 2. In VS Code, open your LLM Wiki project folder (e.g., `my_wiki`).
 3. Select the Cline extension from the left-side navigation bar.
 4. In the Cline chat box, instruct Cline to run the integration script (**Act mode**):
-
-> process raw and cleanup
+```
+process raw and cleanup
+```
 
 **Cline will:**
 
@@ -202,14 +203,15 @@ This produces good results on Windows, macOS, and Linux.
 
 If you need to send a wiki page with someone else, and if they would prefer HTML over Markdown, you can say:
 
-> Export page_name
-
+```
+Export page_name
+```
 ... where *page_name* is the name of the page to export to HTML. The exported HTML file will be in `export/`.
 
 Or if they prefer Word (`docx`) format:
-
-> Export to word page_name
-
+```
+Export to word page_name
+```
 As with HTML, this will write the Word file to `export/`, named like the original page but with a `.docx` file name suffix.
 
 ### 4. Making Todo Lists
