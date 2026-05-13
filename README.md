@@ -201,7 +201,7 @@ This produces good results on Windows, macOS, and Linux.
 
 ### 3. Exporting to HTML and Word
 
-If you need to send a wiki page with someone else, and if they would prefer HTML over Markdown, you can say:
+If you need to send a wiki page to someone else, and if they would prefer HTML over Markdown, you can say:
 
 ```
 Export page_name
