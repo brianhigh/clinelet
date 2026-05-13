@@ -1,0 +1,6 @@
+.clinelet/processed_files.txt
+*.backup
+*.swp
+.DS_Store
+__pycache__/
+*.pyc
