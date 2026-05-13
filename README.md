@@ -140,8 +140,8 @@ Copy the `AGENTS.md` and `scripts/` folders from this repository into your new w
 #### LLM Privacy Considerations
 
 ⚠️ **IMPORTANT**: If your wiki contains sensitive data:
-- **Use only local LLMs** (Ollama, LM Studio, llama.cpp)
-- **Avoid cloud-based models** (ChatGPT, Claude API, Gemini)
+- **Use only locally-hosted LLMs** (via Ollama, LM Studio, llama.cpp, etc.)
+- **Avoid cloud-based models** (ChatGPT, Claude API, Gemini, Copilot)
 - No data should leave your machine
 
 3. **Enable these Auto-approve options:** (because they are **helpful** and **relatively** "safe")
