@@ -229,6 +229,19 @@ This produces good results on Windows, macOS, and Linux.
   - Linux users should use their distribution's native package manager.
 - The OCR-enhanced script is available at `scripts/wiki_integrator_with_ocr.py`.
 
+#### OCR & Image Privacy
+
+⚠️ **WARNING**: OCR processes all images in `raw/`, including sensitive content that might include:
+- Screenshots with unmasked passwords
+- ID documents and passports
+- Photographs with identifiable people
+- Medical images
+
+**Before using OCR**:
+- Do NOT process images containing biometric data
+- Manually redact sensitive information first
+- Consider using local OCR only (tesseract) rather than cloud services
+
 ### 2. Managing the Wiki
 
 | Task | Action |
