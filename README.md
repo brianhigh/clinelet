@@ -174,6 +174,8 @@ process raw and cleanup
 | Establish links | Between related concepts |
 | Log operations | All actions recorded in `wiki/log.md` |
 
+> **Security Note for Sensitive Data**: If your wiki will contain HIPAA, PII, trade secrets, or other regulated data, implement disk encryption, access controls, and audit logging in your deployment.
+
 #### Additional Notes
 
 - **Discussion Mode:** Use **Plan mode** first if you wish to discuss how a document should be integrated into the wiki.
