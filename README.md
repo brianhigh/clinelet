@@ -125,11 +125,19 @@ Copy the `AGENTS.md` and `scripts/` folders from this repository into your new w
    | Slow performance | Try a smaller model (`qwen3.5:4b` or even `qwen3:1.7b`) |
    | Apple Silicon (M-series, <32 GB RAM) | Use [LM Studio](https://lmstudio.ai/download) to serve MLX-quantized models for ~2x speed over Ollama (GGUF) |
 
-3. **Enable these Auto-approve options:**
+3. **Enable these Auto-approve options:** (because they are **helpful** and **relatively** "safe")
 
    - [x] Read project files
    - [x] Edit project files
    - [x] Execute safe commands
+
+4. **Disable these Auto-approve options:** (because they are **dangerous** and **not necessary**) 
+
+   - [ ] Read **all** files
+   - [ ] Edit **all** files
+   - [ ] Execute **all** commands
+   - [ ] Use the **browser**
+   - [ ] Use **MCP servers**
 
 ### Step 2: Customize Rules (Optional)
 
