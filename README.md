@@ -16,7 +16,7 @@ Following the organizational principles proposed by [Andrej Karpathy](https://gi
 
 **Quick start:**
 1. `git clone` → copy `AGENTS.md` and `scripts/` to your workspace
-2. Drop documents into `raw/` → tell Cline: *"process raw and cleanup*
+2. Drop documents into `raw/` → tell Cline: *"process raw and cleanup*"
 3. Browse results in SilverBullet (or Obsidian)
 
 **Two files, one job:** `AGENTS.md` (agent instructions) + `scripts/wiki_integrator.py` (extraction) = `wiki/` (output).
@@ -154,15 +154,7 @@ Review and edit the following file to align with your specific workflow:
 3. Select the Cline extension from the left-side navigation bar.
 4. In the Cline chat box, instruct Cline to run the integration script (**Act mode**):
 
-   ```
-   process @/raw with @/scripts/wiki_integrator.py
-   ```
-
-5. After processing, if the new pages lack formatting (sections, lists, tables, links, etc.):
-
-   ```
-   improve the markdown formatting of the new pages, condense long pages, and interlink with other pages
-   ```
+> process raw and cleanup
 
 **Cline will:**
 
@@ -180,7 +172,7 @@ Review and edit the following file to align with your specific workflow:
 
 #### Adding OCR Support
 
-To add OCR support for image-based PDFs and various image file formats, use `scripts/wiki_integrator_with_ocr.py` instead of `scripts/wiki_integrator.py`
+OCR support has been added for image-based PDFs and various image file formats.
 
 This produces good results on Windows, macOS, and Linux.
 
@@ -196,12 +188,6 @@ This produces good results on Windows, macOS, and Linux.
   - *"how to install Tesseract, Poppler, and ImageMagick on macOS with Homebrew or MacPorts"*
   - Linux users should use their distribution's native package manager.
 - The OCR-enhanced script is available at `scripts/wiki_integrator_with_ocr.py`.
-
-**Usage:**
-
-You can use this prompt to process all supported filetypes and cleanup and integrate the results:
-
-> Process raw and cleanup
 
 ### 2. Managing the Wiki
 
