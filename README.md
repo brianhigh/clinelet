@@ -174,7 +174,7 @@ process raw and cleanup
 | Establish links | Between related concepts |
 | Log operations | All actions recorded in `wiki/log.md` |
 
-> **Security Note for Sensitive Data**: If your wiki will contain HIPAA, PII, trade secrets, or other regulated data, implement disk encryption, access controls, and audit logging in your deployment.
+> **Security Note for Sensitive Data**: If your wiki will contain HIPAA, PII, trade secrets, or other regulated data, implement disk encryption, access controls, and audit logging in your deployment. For more information, see: [Clinelet Security and Privacy Review](security_and_privacy_review.md).
 
 #### Additional Notes
 
