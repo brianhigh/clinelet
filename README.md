@@ -149,7 +149,7 @@ Copy the `AGENTS.md` and `scripts/` folders from this repository into your new w
    - [x] Edit **project** files
    - [x] Execute **safe** commands
 
-4. **Disable these Auto-approve options:** (because they are **dangerous** and **not necessary**) 
+4. **Disable these Auto-approve options:** (because they are **not necessary** and **dangerous** ) 
    - [ ] Read **all** files
    - [ ] Edit **all** files
    - [ ] Execute **all** commands
@@ -213,7 +213,7 @@ process raw and cleanup
 | Establish links | Between related concepts |
 | Log operations | All actions recorded in `wiki/log.md` |
 
-> **Security Note for Sensitive Data**: If your wiki will contain HIPAA, PII, trade secrets, or other regulated data, implement disk encryption, access controls, and audit logging in your deployment. For more information, see: [Clinelet Security and Privacy Review](security_and_privacy_review.md).
+> **Security Note for Sensitive Data**: If your wiki will contain HIPAA, PII, trade secrets, or other regulated data, implement disk encryption, access controls, and audit logging in your deployment. For more information, see: [Clinelet Security and Privacy Review](security_and_privacy_review.md) and [SECURITY.md](SECURITY.md).
 
 #### Additional Notes
 
@@ -259,7 +259,7 @@ This produces good results on Windows, macOS, and Linux.
 | **Reviewing Content** | Open the `wiki/` folder in SilverBullet+ to browse your interlinked knowledge base |
 | **Auditing** | Ask Cline to *"lint the wiki"* to find broken links, orphans, or formatting errors |
 | **Iterating** | Ask Cline to improve the `wiki_integrator.py` or `wiki_integrator_with_ocr.py` script if extraction isn't working |
-| **Cleanup** | Ask Cline to cleanup the Markdown formatting of a wiki page if formatting was lost or corrupted during exctraction |
+| **Cleanup** | Ask Cline to cleanup the Markdown formatting of a wiki page if formatting was lost or corrupted during extraction |
 
 ### 3. Exporting to HTML and Word
 
