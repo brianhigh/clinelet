@@ -76,6 +76,18 @@ pip install pypdf python-docx openpyxl python-pptx python-magic
 
 > Cline will automatically detect missing dependencies and prompt you for approval to install them.
 
+If you prefer to limit the module installation to specific versions with vulnerability checks, you may install these dependencies as follows:
+
+```bash
+# Use specific versions with vulnerability checks
+pip install --upgrade pip
+pip install pip-audit
+pip install pypdf==4.0.1 python-docx==0.8.11 openpyxl==3.11.0 python-pptx==0.6.23 python-magic==0.4.27
+
+# Scan for vulnerabilities
+pip-audit
+```
+
 ---
 
 ## ⚙️ Installation
