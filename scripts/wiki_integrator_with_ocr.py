@@ -14,6 +14,9 @@ SPACE_DIR = "wiki"
 STATE_DIR = ".clinelet"
 MANIFEST_PATH = os.path.join(STATE_DIR, "processed_files.txt")
 
+# Maximum file size for processing (in MB)
+MAX_FILE_SIZE_MB = 100
+
 # Dependency tracking
 MISSING_DEPENDENCIES = []
 
@@ -249,6 +252,34 @@ def save_to_manifest(filename):
             f.write(filename + "\n")
     except Exception as e:
         print(f"Warning: Could not update manifest: {e}")
+
+
+def secure_delete_file(filepath):
+    """Securely overwrite file contents with random data before deletion.
+    
+    This provides basic data sanitization by overwriting the file with random
+    bytes before removing it, making recovery more difficult.
+    
+    Args:
+        filepath: Path to the file to securely delete.
+        
+    Returns:
+        True if securely deleted, False if fallback to regular deletion was used.
+    """
+    try:
+        with open(filepath, 'r+b') as f:
+            length = f.seek(0, 2)  # Get file length
+            f.seek(0)  # Seek to beginning
+            f.write(os.urandom(length))  # Overwrite with random data
+        os.remove(filepath)
+        return True
+    except Exception:
+        try:
+            os.remove(filepath)  # Fallback to regular deletion
+            return False
+        except Exception:
+            return False
+
 
 def detect_file_type(file_path):
     """Detect the MIME type of a file by examining its magic bytes (file signature).
@@ -530,6 +561,16 @@ def ocr_image(file_path):
 
 def process_file(file_path, filename):
     """Extracts text and saves to markdown. Returns False if skipped/failed."""
+    # Check file size
+    try:
+        file_size_mb = os.path.getsize(file_path) / (1024 * 1024)
+        if file_size_mb > MAX_FILE_SIZE_MB:
+            print(f"[SKIP] {filename}: File too large ({file_size_mb:.1f}MB > {MAX_FILE_SIZE_MB}MB)")
+            return False
+    except OSError as e:
+        print(f"[ERROR] Could not check file size for {filename}: {e}")
+        return False
+    
     new_filename = to_snake_case(filename)
     target_path = get_unique_path(SPACE_DIR, new_filename)
     

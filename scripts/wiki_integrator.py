@@ -9,6 +9,9 @@ SPACE_DIR = "wiki"
 STATE_DIR = ".clinelet"
 MANIFEST_PATH = os.path.join(STATE_DIR, "processed_files.txt")
 
+# Maximum file size for processing (in MB)
+MAX_FILE_SIZE_MB = 100
+
 # Magic bytes (file signatures) for MIME type detection
 MAGIC_SIGNATURES = {
     b'%PDF': 'application/pdf',
@@ -205,6 +208,16 @@ def get_unique_path(target_dir, filename):
 
 def process_file(file_path, filename):
     """Extracts text and saves to markdown. Returns False if skipped/failed."""
+    # Check file size
+    try:
+        file_size_mb = os.path.getsize(file_path) / (1024 * 1024)
+        if file_size_mb > MAX_FILE_SIZE_MB:
+            print(f"[SKIP] {filename}: File too large ({file_size_mb:.1f}MB > {MAX_FILE_SIZE_MB}MB)")
+            return False
+    except OSError as e:
+        print(f"[ERROR] Could not check file size for {filename}: {e}")
+        return False
+    
     new_filename = to_snake_case(filename)
     target_path = get_unique_path(SPACE_DIR, new_filename)
     
