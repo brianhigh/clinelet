@@ -127,9 +127,9 @@ Copy the `AGENTS.md` and `scripts/` folders from this repository into your new w
 
 3. **Enable these Auto-approve options:** (because they are **helpful** and **relatively** "safe")
 
-   - [x] Read project files
-   - [x] Edit project files
-   - [x] Execute safe commands
+   - [x] Read **project** files
+   - [x] Edit **project** files
+   - [x] Execute **safe** commands
 
 4. **Disable these Auto-approve options:** (because they are **dangerous** and **not necessary**) 
 
