@@ -19,3 +19,24 @@ This tool assumes:
 4. Review Cline permissions regularly
 5. Backup wiki regularly (encrypted)
 
+## Data Sensitivity Policy
+
+### ✅ Safe for Clinelet (Local Storage)
+- Public company information
+- Published research
+- General knowledge base content
+- Non-sensitive meeting notes
+
+### ⚠️ Requires Additional Controls
+- **Public**: Data with no confidentiality requirement
+  - Control: Standard local file permissions
+
+- **Confidential**: Internal company data
+  - Control: Disk encryption (BitLocker, FileVault) + access controls
+
+- **Restricted/HIPAA**: Patient records, health data, SSNs
+  - Control: Full disk encryption + separate encrypted partition + audit logging
+  - Recommendation: DO NOT store in this tool; use compliant systems instead
+
+- **PCI-DSS**: Credit card data
+  - Recommendation: NEVER store locally; use compliant payment processors
