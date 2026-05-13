@@ -5,6 +5,8 @@ import subprocess
 import tempfile
 import shutil
 import platform
+import struct
+import zipfile
 
 # Constants
 RAW_DIR = "raw"
@@ -14,6 +16,68 @@ MANIFEST_PATH = os.path.join(STATE_DIR, "processed_files.txt")
 
 # Dependency tracking
 MISSING_DEPENDENCIES = []
+
+# Magic bytes (file signatures) for MIME type detection
+# Format: {offset_bytes: (signature_bytes, mime_type)}
+MAGIC_SIGNATURES = {
+    # PDF
+    b'%PDF': 'application/pdf',
+    # DOCX (ZIP-based, magic at offset 0x50)
+    b'PK\x03\x04': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    # XLSX (ZIP-based)
+    b'PK\x03\x04': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    # PPTX (ZIP-based)
+    b'PK\x03\x04': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    # PNG
+    b'\x89PNG\r\n\x1a\n': 'image/png',
+    # JPEG
+    b'\xff\xd8\xff': 'image/jpeg',
+    # GIF
+    b'GIF87a': 'image/gif',
+    b'GIF89a': 'image/gif',
+    # BMP
+    b'BM': 'image/bmp',
+    # TIFF (little-endian)
+    b'II\x2a\x00': 'image/tiff',
+    # TIFF (big-endian)
+    b'MM\x00\x2a': 'image/tiff',
+    # WebP
+    b'RIFF': 'image/webp',  # RIFF header, MIME confirmed by checking for 'WEBP' at offset 8
+    # HTML (also covers XML)
+    b'<!DOCTYPE html': 'text/html',
+    b'<html': 'text/html',
+    b'<?xml': 'text/xml',
+    # ZIP (general container for DOCX/XLSX/PPTX)
+    b'PK\x03\x04': 'application/zip',
+}
+
+# MIME type to extension mapping for validation
+MIME_TO_EXTENSIONS = {
+    'application/pdf': ['.pdf'],
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'],
+    'image/png': ['.png'],
+    'image/jpeg': ['.jpg', '.jpeg'],
+    'image/gif': ['.gif'],
+    'image/bmp': ['.bmp'],
+    'image/tiff': ['.tiff', '.tif'],
+    'image/webp': ['.webp'],
+    'text/plain': ['.txt', '.md'],
+    'text/html': ['.html', '.htm'],
+    'text/xml': ['.xml'],
+    'application/zip': ['.zip'],
+    'application/rtf': ['.rtf'],
+    'text/rtf': ['.rtf'],
+}
+
+# Try to import python-magic for more robust MIME detection
+HAVE_PYTHON_MAGIC = False
+try:
+    import magic
+    HAVE_PYTHON_MAGIC = True
+except ImportError:
+    pass
 
 def get_os_info():
     """Detect the operating system and return appropriate package manager info.
@@ -185,6 +249,116 @@ def save_to_manifest(filename):
             f.write(filename + "\n")
     except Exception as e:
         print(f"Warning: Could not update manifest: {e}")
+
+def detect_file_type(file_path):
+    """Detect the MIME type of a file by examining its magic bytes (file signature).
+    
+    This provides content-based detection rather than relying on filename extensions,
+    which helps catch mismatched or misleading file types.
+    
+    Args:
+        file_path: Path to the file to detect.
+        
+    Returns:
+        A string containing the detected MIME type (e.g., 'application/pdf'),
+        or None if the type could not be determined.
+    """
+    # If python-magic is available, use it for best results
+    if HAVE_PYTHON_MAGIC:
+        try:
+            mime = magic.Magic(mime=True)
+            detected = mime.from_file(file_path)
+            if detected:
+                return detected
+        except Exception:
+            pass
+    
+    # Fallback to manual magic byte detection
+    try:
+        with open(file_path, 'rb') as f:
+            # Read enough bytes to cover all our signatures
+            header = f.read(12)
+            if not header or len(header) < 2:
+                return None
+            
+            # Check fixed signatures first (exact byte match at offset 0)
+            for sig, mime_type in MAGIC_SIGNATURES.items():
+                if isinstance(sig, bytes) and header[:len(sig)] == sig:
+                    # Special case: RIFF -> could be WebP, need to check further
+                    if sig == b'RIFF':
+                        if len(header) >= 12 and f.read(4) == b'WEBP':
+                            return 'image/webp'
+                        else:
+                            # RIFF without WEBP - might be audio, skip
+                            continue
+                    return mime_type
+            
+            # For ZIP-based files (DOCX, XLSX, PPTX), we need to inspect the ZIP contents
+            if header[:4] == b'PK\x03\x04':
+                try:
+                    with zipfile.ZipFile(file_path, 'r') as zf:
+                        for name in zf.namelist():
+                            name_lower = name.lower()
+                            if name_lower.startswith('word/') and name_lower.endswith('.xml'):
+                                return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                            elif name_lower.startswith('xl/') and name_lower.endswith('.xml'):
+                                return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                            elif name_lower.startswith('ppt/') and name_lower.endswith('.xml'):
+                                return 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+                        # Generic ZIP
+                        return 'application/zip'
+                except Exception:
+                    return 'application/zip'
+            
+            # For text files, check the first line more carefully
+            try:
+                first_line = header.decode('utf-8', errors='ignore').strip().lower()
+                if first_line.startswith('<!doctype html') or first_line.startswith('<html'):
+                    return 'text/html'
+                elif first_line.startswith('<?xml'):
+                    return 'text/xml'
+                elif first_line and all(c.isprintable() or c in '\n\r\t' for c in first_line[:100]):
+                    # Looks like plain text
+                    return 'text/plain'
+            except Exception:
+                pass
+            
+            return None
+    except Exception:
+        return None
+
+
+def validate_mime_vs_extension(file_path, detected_mime):
+    """Validate that the file's extension matches its detected MIME type.
+    
+    Args:
+        file_path: Path to the file.
+        detected_mime: The detected MIME type string.
+        
+    Returns:
+        A tuple (is_valid, warning_message). is_valid is True if the extension
+        matches the MIME type. warning_message describes any mismatch.
+    """
+    ext = os.path.splitext(file_path)[1].lower()
+    
+    if detected_mime not in MIME_TO_EXTENSIONS:
+        # Unknown MIME type, skip validation
+        return True, None
+    
+    expected_extensions = MIME_TO_EXTENSIONS[detected_mime]
+    
+    if ext in expected_extensions:
+        return True, None
+    else:
+        # Check if the MIME type is a generic container (ZIP) - allow flexibility
+        if detected_mime == 'application/zip':
+            return True, None
+        if detected_mime == 'text/plain':
+            # Plain text is flexible - .md, .txt, .html, .xml all count
+            return True, None
+        
+        return False, f"Extension '{ext}' does not match detected MIME type '{detected_mime}'. Expected one of: {expected_extensions}"
+
 
 def to_snake_case(filename):
     """Converts filename to snake_case and ensures it ends in .md"""
@@ -629,6 +803,7 @@ def main():
     check_python_module("docx", "docx", "python-docx")
     check_python_module("openpyxl", "openpyxl", "openpyxl")
     check_python_module("pptx", "pptx", "python-pptx")
+    check_python_module("magic", "magic", "python-magic")
     
     # Check system tools (package names only - OS-specific commands are auto-detected)
     check_system_tool("tesseract", "tesseract-ocr")
@@ -664,14 +839,52 @@ def main():
         return
 
     print(f"Found {len(to_process)} candidate files...")
+    print("[*] MIME type validation: ENABLED (content-based detection)")
+    print()
+
+    results = {"success": [], "mime_warnings": [], "skipped": []}
 
     for filename in to_process:
         file_path = os.path.join(RAW_DIR, filename)
         
         if os.path.isfile(file_path):
+            # Step 1: Detect MIME type from file content
+            detected_mime = detect_file_type(file_path)
+            ext = os.path.splitext(filename)[1].lower()
+            
+            # Step 2: Validate MIME type against extension
+            is_valid, warning_msg = validate_mime_vs_extension(file_path, detected_mime) if detected_mime else (True, None)
+            
+            if detected_mime:
+                print(f"[*] {filename}: extension='{ext}', detected MIME='{detected_mime}'")
+            
+            if warning_msg:
+                print(f"[WARNING] {filename}: {warning_msg}")
+                results["mime_warnings"].append((filename, warning_msg))
+            
+            # Step 3: Process the file
             if process_file(file_path, filename):
                 save_to_manifest(filename)
                 print(f"[SUCCESS] Integrated: {filename}")
+                results["success"].append(filename)
+            else:
+                print(f"[SKIPPED] {filename}")
+                results["skipped"].append(filename)
+
+    # Print summary
+    print()
+    print("=" * 60)
+    print("INGESTION SUMMARY")
+    print("=" * 60)
+    print(f"  Files processed successfully: {len(results['success'])}")
+    print(f"  Files with MIME warnings:     {len(results['mime_warnings'])}")
+    print(f"  Files skipped:                {len(results['skipped'])}")
+    if results["mime_warnings"]:
+        print()
+        print("MIME mismatch details:")
+        for fname, msg in results["mime_warnings"]:
+            print(f"  - {fname}: {msg}")
+    print("=" * 60)
 
 if __name__ == "__main__":
     main()
