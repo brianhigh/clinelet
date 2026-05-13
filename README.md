@@ -158,16 +158,6 @@ Copy the `AGENTS.md` and `scripts/` folders from this repository into your new w
 
 **Why These Settings Matter**
 
-**Unsafe settings disabled**:
-
-| Setting | Danger |
-|---------|--------|
-| Read **all** files | LLM could read SSH keys, AWS creds, /etc/passwd |
-| Edit **all** files | Could modify system files or steal data |
-| Execute **all** commands | Could run `rm -rf /`, crypto miners, exfiltrate data |
-| Use browser | Could redirect you to phishing sites |
-| MCP servers | Unknown security implications |
-
 **Safe settings enabled**:
 
 | Setting | Why Safe |
@@ -175,6 +165,16 @@ Copy the `AGENTS.md` and `scripts/` folders from this repository into your new w
 | Read project files | Limited to `wiki/`, `raw/`, `scripts/`, `AGENTS.md`, etc. |
 | Edit project files | User can review changes before committing |
 | Execute safe commands | Limited to documentation/export commands |
+
+**Unsafe settings disabled**:
+
+| Setting | Danger |
+|---------|--------|
+| Read **all** files | LLM could read SSH keys, AWS creds, /etc/passwd |
+| Edit **all** files | Could modify system files or steal data |
+| Execute **all** commands | Could run `rm -rf /`, crypto miners, exfiltrate data |
+| Use **browser** | Could redirect you to phishing sites |
+| Use **MCP servers** | Unknown security implications |
 
 See: [SECURITY.md](SECURITY.md) for additional security guidance.
 
