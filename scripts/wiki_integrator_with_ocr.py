@@ -7,6 +7,8 @@ import shutil
 import platform
 import struct
 import zipfile
+import stat
+import atexit
 
 # Constants
 RAW_DIR = "raw"
@@ -16,6 +18,47 @@ MANIFEST_PATH = os.path.join(STATE_DIR, "processed_files.txt")
 
 # Maximum file size for processing (in MB)
 MAX_FILE_SIZE_MB = 100
+
+# Global tracking for temp directories to clean up on exit
+TEMP_DIRS_TO_CLEAN = []
+
+def cleanup_temp_dirs():
+    """Clean up all tracked temporary directories.
+    
+    Call this at the end of processing to ensure all temp dirs are removed.
+    Also called via atexit registration in main().
+    """
+    for temp_dir in list(TEMP_DIRS_TO_CLEAN):
+        try:
+            if os.path.exists(temp_dir) and os.path.isdir(temp_dir):
+                shutil.rmtree(temp_dir)
+                TEMP_DIRS_TO_CLEAN.remove(temp_dir)
+        except Exception:
+            pass
+
+def create_secure_temp_dir(prefix='clinelet_'):
+    """Create a secure temporary directory for file processing.
+    
+    Creates a temp directory with restrictive permissions where possible.
+    On Windows, permissions are managed by the OS (always owner-only).
+    
+    Args:
+        prefix: Prefix for the temp directory name.
+        
+    Returns:
+        Path to the temporary directory, or None on failure.
+    """
+    try:
+        temp_dir = tempfile.mkdtemp(prefix=prefix)
+        TEMP_DIRS_TO_CLEAN.append(temp_dir)
+        
+        # Set restrictive permissions on non-Windows platforms
+        if platform.system() != 'Windows':
+            os.chmod(temp_dir, stat.S_IRWXU)  # 700 - rwx------
+        
+        return temp_dir
+    except Exception:
+        return None
 
 # Dependency tracking
 MISSING_DEPENDENCIES = []
@@ -502,6 +545,7 @@ def set_tesseract_env(tesseract_path):
     print("[!] Warning: Could not find tessdata directory for tesseract")
     return False
 
+
 def ocr_image(file_path):
     """OCR on an image file using tesseract, with pre-conversion to 8-bit RGB to avoid Tesseract/Leptonica issues."""
     tesseract_path = _find_tool("tesseract")
@@ -511,7 +555,12 @@ def ocr_image(file_path):
     
     magick_path = shutil.which("magick")
     
-    with tempfile.TemporaryDirectory() as tmpdir:
+    tmpdir = create_secure_temp_dir("ocr_img_")
+    if tmpdir is None:
+        print(f"[!] Failed to create temp directory for {file_path}")
+        return None
+    
+    try:
         converted_img_path = os.path.join(tmpdir, "converted_image.png")
         conversion_success = False
 
@@ -556,6 +605,16 @@ def ocr_image(file_path):
         if os.path.exists(txt_path):
             with open(txt_path, 'r', encoding='utf-8') as f:
                 return f.read().strip()
+        
+        return None
+    finally:
+        # Clean up temp dir after OCR
+        try:
+            shutil.rmtree(tmpdir)
+            if tmpdir in TEMP_DIRS_TO_CLEAN:
+                TEMP_DIRS_TO_CLEAN.remove(tmpdir)
+        except Exception:
+            pass
     return None
 
 
@@ -601,8 +660,14 @@ def process_file(file_path, filename):
                             print("[!] pdftoppm not found in PATH. Install poppler for PDF OCR support.")
                             return False
 
-                        with tempfile.TemporaryDirectory() as tmpdir:
-                            prefix = os.path.join(tmpdir, "page")
+                        # Create secure temp dir for PDF OCR pages
+                        pdf_tmpdir = create_secure_temp_dir("pdf_ocr_")
+                        if pdf_tmpdir is None:
+                            print(f"[!] Failed to create temp directory for PDF OCR of {filename}")
+                            return False
+                        
+                        try:
+                            prefix = os.path.join(pdf_tmpdir, "page")
                             subprocess.run(
                                 [pdftoppm_path, "-png", file_path, prefix],
                                 check=True,
@@ -612,16 +677,16 @@ def process_file(file_path, filename):
                             
                             # Get all png files and sort them numerically by the page number in filename
                             image_files = []
-                            for f in os.listdir(tmpdir):
-                                match = re.search(r'page-(\d+)\.png$', f)
+                            for fname in os.listdir(pdf_tmpdir):
+                                match = re.search(r'page-(\d+)\.png$', fname)
                                 if match:
-                                    image_files.append((int(match.group(1)), f))
+                                    image_files.append((int(match.group(1)), fname))
                             
                             image_files.sort()
                             
                             ocr_contents = []
                             for _, img_name in image_files:
-                                img_path = os.path.join(tmpdir, img_name)
+                                img_path = os.path.join(pdf_tmpdir, img_name)
                                 ocr_text = ocr_image(img_path)
                                 ocr_contents.append(ocr_text if ocr_text else "")
                             
@@ -632,6 +697,17 @@ def process_file(file_path, filename):
                                 return False
                             else:
                                 print(f"[+] OCR successful for {filename}")
+                        except (subprocess.CalledProcessError, FileNotFoundError, Exception) as e:
+                            print(f"[-] OCR failed for {filename}: {e}")
+                            return False
+                        finally:
+                            # Clean up PDF OCR temp dir
+                            try:
+                                shutil.rmtree(pdf_tmpdir)
+                                if pdf_tmpdir in TEMP_DIRS_TO_CLEAN:
+                                    TEMP_DIRS_TO_CLEAN.remove(pdf_tmpdir)
+                            except Exception:
+                                pass
                     except (subprocess.CalledProcessError, FileNotFoundError, Exception) as e:
                         print(f"[-] OCR failed for {filename}: {e}")
                         return False
@@ -730,6 +806,27 @@ def check_python_module(module_name, import_name=None, install_name=None):
             "install": install_name,
             "description": f"Python module '{module_name}'"
         })
+        return False
+
+
+def verify_python_magic():
+    """Verify that python-magic is actually working (DLLs on PATH).
+    
+    This is a secondary check after the import check, since python-magic
+    requires its DLLs to be on the system PATH.
+    
+    Returns True if working, False if not.
+    """
+    try:
+        import magic
+        m = magic.Magic(mime=True)
+        # Test with a known file
+        test_path = os.path.join(RAW_DIR, 'priorities.md') if os.path.exists(RAW_DIR) else __file__
+        if os.path.exists(test_path):
+            result = m.from_file(test_path)
+            return result is not None
+        return True  # No test file, assume working
+    except Exception:
         return False
 
 
@@ -844,7 +941,24 @@ def main():
     check_python_module("docx", "docx", "python-docx")
     check_python_module("openpyxl", "openpyxl", "openpyxl")
     check_python_module("pptx", "pptx", "python-pptx")
-    check_python_module("magic", "magic", "python-magic")
+    
+    # Check python-magic with actual DLL verification
+    magic_ok = check_python_module("magic", "magic", "python-magic")
+    if magic_ok:
+        magic_working = verify_python_magic()
+        if not magic_working:
+            # python-magic imported but DLLs not found
+            MISSING_DEPENDENCIES.append({
+                "type": "system",
+                "tool": "libmagic.dll",
+                "package": "python-magic-bin",
+                "install_cmd": "pip install python-magic-bin",
+                "alternatives": [],
+                "description": "python-magic DLLs (libmagic)"
+            })
+    else:
+        # python-magic not installed at all - add to optional dependencies
+        pass  # Built-in detection will be used as fallback
     
     # Check system tools (package names only - OS-specific commands are auto-detected)
     check_system_tool("tesseract", "tesseract-ocr")
@@ -926,7 +1040,11 @@ def main():
         for fname, msg in results["mime_warnings"]:
             print(f"  - {fname}: {msg}")
     print("=" * 60)
+    
+    # Clean up all remaining temp directories
+    cleanup_temp_dirs()
 
 if __name__ == "__main__":
+    atexit.register(cleanup_temp_dirs)
     main()
 
