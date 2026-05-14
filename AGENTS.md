@@ -38,7 +38,10 @@ This script will:
 
 **Prerequisites (missing dependencies):**
 - Python: `pip install pypdf python-docx openpyxl python-pptx Pillow`
+- Optional (enhanced MIME detection): `pip install python-magic` or `pip install python-magic-bin` (uses libmagic for content-based file type detection)
 - System (Windows): `winget install tesseract-ocr poppler-utils ImageMagick`
+
+**Note:** MIME type validation is now enabled by default in the wiki integrator. It detects file types by examining file content (magic bytes) rather than relying on filename extensions. For more accurate MIME detection, install `python-magic` (`pip install python-magic`). Without it, the script falls back to built-in magic byte detection which handles all common formats.
 
 If dependencies are missing, the script will report them but continue processing supported formats.
 
