@@ -793,24 +793,39 @@ def process_file(file_path, filename):
             try:
                 import ebooklib
                 from ebooklib import epub
+                try:
+                    from bs4 import BeautifulSoup
+                    have_bs4 = True
+                except ImportError:
+                    have_bs4 = False
                 book = epub.read_epub(file_path, options={'ignore_ncx': True})
                 items = list(book.get_items_of_type(ebooklib.ITEM_DOCUMENT))
                 chapters_text = []
                 for item in items:
                     html = item.get_content().decode('utf-8', errors='replace')
                     # Strip HTML tags to get plain text
-                    text = re.sub(r'<[^>]+>', '', html)
-                    text = re.sub(r'\s+', ' ', text).strip()
-                    if text:
-                        chapters_text.append(text)
+                    if have_bs4:
+                        soup = BeautifulSoup(html, 'html.parser')
+                        # Find and remove all tags that look like artifacts
+                        for tag in soup.find_all(True):
+                            tag.decompose()
+                        text = soup.get_text()
+                        # Clean up whitespace
+                        text = re.sub(r'\s+', ' ', text).strip()
+                        if text:
+                            chapters_text.append(text)
+                    else:
+                        text = re.sub(r'<[^>]+>', '', html)
+                        text = re.sub(r'\s+', ' ', text).strip()
+                        if text:
+                            chapters_text.append(text)
                 content = "\n\n".join(chapters_text)
             except ImportError:
-                print(f"[-] Missing 'ebooklib'. Install with: pip install ebooklib")
+                print(f"[-] Missing 'ebooklib'. Skipping: {filename}")
                 return False
             except Exception as parse_err:
                 print(f"[!] ebooklib failed to parse '{filename}': {parse_err}")
                 print(f"[*] Falling back to raw ZIP text extraction...")
-                # Fallback: extract all text files from the EPUB ZIP
                 try:
                     with zipfile.ZipFile(file_path, 'r') as zf:
                         parts = []
