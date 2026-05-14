@@ -13,7 +13,7 @@ import atexit
 # Constants
 RAW_DIR = "raw"
 SPACE_DIR = "wiki"
-STATE_DIR = ".clinelet"
+STATE_DIR = ".froglet"
 MANIFEST_PATH = os.path.join(STATE_DIR, "processed_files.txt")
 
 # Maximum file size for processing (in MB)
@@ -36,7 +36,7 @@ def cleanup_temp_dirs():
         except Exception:
             pass
 
-def create_secure_temp_dir(prefix='clinelet_'):
+def create_secure_temp_dir(prefix='froglet_'):
     """Create a secure temporary directory for file processing.
     
     Creates a temp directory with restrictive permissions where possible.

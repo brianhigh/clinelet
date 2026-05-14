@@ -30,7 +30,7 @@ When the user says "process raw" (or similar), run the wiki integrator script to
 **Command:** `python scripts/wiki_integrator_with_ocr.py`
 
 This script will:
-1. Scan `raw/` for files not yet in `.clinelet/processed_files.txt`
+1. Scan `raw/` for files not yet in `.froglet/processed_files.txt`
 2. Extract text from supported formats (`.md`, `.txt`, `.html`, `.docx`, `.xlsx`, `.pptx`, `.pdf`, images)
 3. Convert and save content to `wiki/` as snake_case markdown files
 4. Log processed filenames to the manifest

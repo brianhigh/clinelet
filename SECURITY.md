@@ -1,4 +1,4 @@
-# Security & Privacy Policy for Clinelet
+# Security & Privacy Policy for froglet
 
 ## Data Residency
 - All data stays on your local machine (**if** you only use **local** LLMs)
@@ -21,7 +21,7 @@ This tool assumes:
 
 ## Data Sensitivity Policy
 
-### ✅ Safe for Clinelet (Local Storage)
+### ✅ Safe for froglet (Local Storage)
 - Public company information
 - Published research
 - General knowledge base content

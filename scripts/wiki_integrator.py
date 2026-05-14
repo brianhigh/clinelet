@@ -6,7 +6,7 @@ import zipfile
 # Constants
 RAW_DIR = "raw"
 SPACE_DIR = "wiki"
-STATE_DIR = ".clinelet"
+STATE_DIR = ".froglet"
 MANIFEST_PATH = os.path.join(STATE_DIR, "processed_files.txt")
 
 # Maximum file size for processing (in MB)

@@ -1,12 +1,12 @@
-# Security and Privacy Review of Clinelet (by Claude Haiku 4.5)
+# Security and Privacy Review of froglet (by Claude Haiku 4.5)
 
-Based on my analysis of the `brianhigh/clinelet` repository, here is a security and privacy review that accounts for its **scaffolding and local-deployment purpose**.
+Based on my analysis of the `brianhigh/froglet` repository, here is a security and privacy review that accounts for its **scaffolding and local-deployment purpose**.
 
 ---
 
 ## Executive Summary
 
-**Clinelet** is a template/scaffolding project that provides agent instructions, Python scripts, and configuration patterns for users to build their own *local* "Living LLM Wiki" using VS Code, the Cline extension, and SilverBullet. The project itself does **not store data online** — it provides reusable patterns and tools.
+**froglet** is a template/scaffolding project that provides agent instructions, Python scripts, and configuration patterns for users to build their own *local* "Living LLM Wiki" using VS Code, the Cline extension, and SilverBullet. The project itself does **not store data online** — it provides reusable patterns and tools.
 
 **Security posture: LOW-RISK** for this scaffolding use case. Most concerns are **mitigated by design** (local-only, user-owned data, transparent code). However, users deploying this pattern should still be aware of operational security best practices for *their own implementations*.
 
@@ -17,12 +17,12 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
 ### 1. **Data is Never Stored Online**
 - ✅ **Mitigation**: The scaffolding produces local `wiki/` folders on the user's own machine(s).
 - ✅ **No cloud sync** implied in the documentation (users control where data goes).
-- ✅ **Users own the data** — clinelet doesn't collect or transmit anything.
-- **Impact**: Supply chain attacks, data breaches, and government subpoenas affecting clinelet don't affect user data.
+- ✅ **Users own the data** — froglet doesn't collect or transmit anything.
+- **Impact**: Supply chain attacks, data breaches, and government subpoenas affecting froglet don't affect user data.
 
 ### 2. **No Third-Party Services Required**
 - ✅ **All tools are open-source and self-hosted**: VS Code (local), Cline (local LLM support via Ollama/LM Studio), SilverBullet (self-hosted web app or desktop).
-- ✅ **No telemetry** from clinelet itself.
+- ✅ **No telemetry** from froglet itself.
 - **Impact**: Users have full control; no dependency on external SaaS platforms.
 
 ### 3. **Transparent, Auditable Code**
@@ -32,12 +32,12 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
 
 ### 4. **Access Control is User's Responsibility**
 - ✅ Users decide who has access to their `wiki/` folder (file system permissions, network access, etc.).
-- ✅ Not clinelet's responsibility to enforce access control — it's a template, not a service.
+- ✅ Not froglet's responsibility to enforce access control — it's a template, not a service.
 - **Impact**: Users of this template have flexibility to implement their own access policies.
 
 ---
 
-## 🟡 Remaining Operational Risks (For Users Implementing Clinelet)
+## 🟡 Remaining Operational Risks (For Users Implementing froglet)
 
 ### 1. **File Processing Security When Ingesting User-Provided Documents**
 - **Risk Level**: MODERATE (but manageable)
@@ -69,7 +69,7 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
   - ✅ Create a virtual environment (`python -m venv venv`) to isolate dependencies.
   - ✅ Keep dependencies updated: `pip install --upgrade [packages]`
   - ✅ Pin versions to known-safe releases in a `requirements.txt` file.
-- **Clinelet's Role**: The README recommends checking dependencies — this is good.
+- **froglet's Role**: The README recommends checking dependencies — this is good.
 
 ### 4. **OCR and Temporary File Handling**
 - **Risk Level**: LOW
@@ -83,7 +83,7 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
 ### 5. **Sensitive Data in Local Wiki (User's Responsibility)**
 - **Risk Level**: DEPENDS ON USER BEHAVIOR
 - **Concern**: If a user ingests HIPAA, PII, or trade secrets into their `wiki/`, those are now stored on their local machine. If the machine is compromised, data is at risk.
-- **This is Not Clinelet's Risk**: It's a user decision to ingest sensitive data.
+- **This is Not froglet's Risk**: It's a user decision to ingest sensitive data.
 - **Mitigation for Users**:
   - ✅ Use disk encryption (`BitLocker` on Windows, `FileVault` on macOS, `LUKS` on Linux).
   - ✅ Implement access controls (`chmod 700 wiki/`).
@@ -127,7 +127,7 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
 
 ---
 
-## 📋 Best Practices for Users Deploying Clinelet
+## 📋 Best Practices for Users Deploying froglet
 
 | Category | Best Practice |
 |----------|---|
@@ -164,13 +164,13 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
 ## 🚫 NOT Suitable Without Significant User Modifications
 
 - ❌ **Multi-user shared wiki on networked drives** — No built-in authentication or encryption. Users would need to add these.
-- ❌ **Regulatory compliance requirements** (SOC 2, ISO 27001, GDPR) — Clinelet is a template, not a compliance solution. Users must implement controls.
+- ❌ **Regulatory compliance requirements** (SOC 2, ISO 27001, GDPR) — froglet is a template, not a compliance solution. Users must implement controls.
 
 ---
 
 ## Final Assessment
 
-**Clinelet is a WELL-DESIGNED scaffolding template for local wikis** with the following security properties:
+**froglet is a WELL-DESIGNED scaffolding template for local wikis** with the following security properties:
 
 | Aspect | Rating | Notes |
 |--------|--------|-------|
@@ -180,7 +180,7 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
 | **Operational guidance** | ⭐⭐⭐⭐ | README provides good security recommendations (disable browser, MCP, etc.) |
 | **Built-in hardening** | ⭐⭐⭐ | Good foundation; users must implement encryption/RBAC for sensitive data |
 
-**Verdict**: Clinelet is **secure for its intended purpose** (scaffolding local wikis) and provides a good foundation for users to build on. Security responsibility appropriately shifts to the user's implementation, which is correct for a template/toolkit.
+**Verdict**: froglet is **secure for its intended purpose** (scaffolding local wikis) and provides a good foundation for users to build on. Security responsibility appropriately shifts to the user's implementation, which is correct for a template/toolkit.
 
 **For sensitive use cases**, the README should include an additional section with explicit recommendations:
 > **Security Note for Sensitive Data**: If your wiki will contain HIPAA, PII, trade secrets, or other regulated data, implement disk encryption, access controls, and audit logging in your deployment.

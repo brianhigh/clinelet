@@ -1,10 +1,10 @@
-<!-- <img align="left" width="64" height="64" src="images/clinelet_logo_vy_sm.png" style="margin-right: 10px;"> -->
+<!-- <img align="left" width="64" height="64" src="images/froglet_logo_vy_sm.png" style="margin-right: 10px;"> -->
 
-# 🐸 Clinelet
+# 🐸 froglet
 **Transform the VS Code Cline Extension into an automated "Living LLM Wiki" curator agent.**
 <br clear="left" />
 
-`clinelet` provides a set of specialized agent instructions and an import script designed to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base — optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app. The agent instructions, scripts, and example prompts provided here can be used with almost any agent harness and wiki browser.
+`froglet` provides a set of specialized agent instructions and an import script designed to ingest raw documents and transform them into a dense, interlinked, and searchable knowledge base — optimized for browsing with the [SilverBullet](https://silverbullet.md/) wiki app. The agent instructions, scripts, and example prompts provided here can be used with almost any agent harness and wiki browser.
 
 Following the organizational principles proposed by [Andrej Karpathy](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f), this setup creates a "Living LLM Wiki" — a dense web of interconnected Markdown pages that enable easy discovery and connection between disparate ideas.
 
@@ -83,10 +83,10 @@ pip install pypdf python-docx openpyxl python-pptx python-magic-bin
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/brianhigh/clinelet.git
+git clone https://github.com/brianhigh/froglet.git
 ```
 
-This creates a `clinelet/` folder containing the files from this repository.
+This creates a `froglet/` folder containing the files from this repository.
 
 ### Step 2: Set Up Your Workspace
 
@@ -94,8 +94,8 @@ Create a new directory for your wiki (e.g., `my_wiki/`) with the following struc
 
 ```text
 my_wiki/
-├── AGENTS.md           ← Copy from clinelet/AGENTS.md
-├── scripts/            ← Copy from clinelet/scripts/
+├── AGENTS.md           ← Copy from froglet/AGENTS.md
+├── scripts/            ← Copy from froglet/scripts/
 ├── raw/                ← Place your source documents here
 └── wiki/               ← Your generated knowledge base
 ```
@@ -201,12 +201,12 @@ process raw and cleanup
 | Establish links | Between related concepts |
 | Log operations | All actions recorded in `wiki/log.md` |
 
-> **Security Note for Sensitive Data**: If your wiki will contain HIPAA, PII, trade secrets, or other regulated data, implement disk encryption, access controls, and audit logging in your deployment. For more information, see: [Clinelet Security and Privacy Review](security_and_privacy_review.md) and [SECURITY.md](SECURITY.md).
+> **Security Note for Sensitive Data**: If your wiki will contain HIPAA, PII, trade secrets, or other regulated data, implement disk encryption, access controls, and audit logging in your deployment. For more information, see: [froglet Security and Privacy Review](security_and_privacy_review.md) and [SECURITY.md](SECURITY.md).
 
 #### Additional Notes
 
 - **Discussion Mode:** Use **Plan mode** first if you wish to discuss how a document should be integrated into the wiki.
-- **Re-importing Documents:** Remove the filename from `.clinelet/processed_files.txt` to reimport existing `raw/` documents.
+- **Re-importing Documents:** Remove the filename from `.froglet/processed_files.txt` to reimport existing `raw/` documents.
 
 #### Adding OCR Support
 
