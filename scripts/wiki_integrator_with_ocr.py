@@ -517,6 +517,25 @@ def _find_tool(name):
     
     return None
 
+def _find_imagemagick():
+    """Find ImageMagick executable. Returns the full path or None.
+    
+    Searches for both 'magick' (ImageMagick 7) and 'convert' (ImageMagick 6).
+    Returns the first one found, or None if neither is found.
+    """
+    # Try magick first (ImageMagick 7)
+    magick_path = shutil.which("magick")
+    if magick_path:
+        return magick_path
+    
+    # Try convert as fallback (ImageMagick 6)
+    convert_path = shutil.which("convert")
+    if convert_path:
+        return convert_path
+    
+    return None
+
+
 def get_tesseract_data_dir(tesseract_path):
     """Find the tessdata directory for a given tesseract installation.
     Returns the path to the tessdata directory or None.
@@ -553,7 +572,8 @@ def ocr_image(file_path):
         print("[!] tesseract not found in PATH")
         return None
     
-    magick_path = shutil.which("magick")
+    # Find ImageMagick executable (supports both v7 `magick` and v6 `convert`)
+    im_path = _find_imagemagick()
     
     tmpdir = create_secure_temp_dir("ocr_img_")
     if tmpdir is None:
@@ -575,10 +595,10 @@ def ocr_image(file_path):
             print(f"[*] Pillow conversion failed for {file_path}, trying ImageMagick: {e}")
             
             # Fallback to ImageMagick
-            if magick_path:
+            if im_path:
                 try:
                     result = subprocess.run(
-                        [magick_path, file_path, converted_img_path],
+                        [im_path, file_path, converted_img_path],
                         capture_output=True,
                         text=True,
                         check=True
@@ -587,7 +607,7 @@ def ocr_image(file_path):
                 except subprocess.CalledProcessError as err:
                     print(f"[!] ImageMagick conversion failed for {file_path}: {err.stderr}")
             else:
-                print("[!] ImageMagick (magick) not found in PATH. Cannot fallback.")
+                print("[!] ImageMagick not found in PATH. Cannot fallback.")
 
         if not conversion_success:
             print(f"[!] Failed to convert image {file_path} for OCR using both Pillow and ImageMagick.")
@@ -964,7 +984,14 @@ def main():
     check_system_tool("tesseract", "tesseract-ocr")
     check_system_tool("pdftoppm", "poppler-utils")
     check_system_tool("pdftocairo", "poppler-utils")
-    check_system_tool("magick", "imagemagick")
+    
+    # ImageMagick can use either 'magick' (v7) or 'convert' (v6), so check both
+    im_path = _find_imagemagick()
+    if im_path is not None:
+        print(f"[*] Found ImageMagick: {im_path}")
+    else:
+        check_system_tool("magick", "imagemagick-7")
+        check_system_tool("convert", "imagemagick")
     
     # Print dependency report
     has_missing = print_dependency_report()

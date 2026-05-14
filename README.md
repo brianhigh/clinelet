@@ -238,7 +238,7 @@ This produces good results on Windows, macOS, and Linux.
 **Before using OCR**:
 - Do NOT process images containing biometric data
 - Manually redact sensitive information first
-- Consider using local OCR only (tesseract) rather than cloud services
+- Consider using local OCR only (tesseract) rather than cloud services, as we do here
 
 ### 2. Managing the Wiki
 
