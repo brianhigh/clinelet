@@ -68,10 +68,10 @@ Ensure the following tools are installed on your system:
 
 ### Additional Python Packages
 
-To process non-text filetypes (`.pdf`, `.docx`, `.xlsx`, `.pptx`), install these additional packages:
+To process non-text filetypes (`.pdf`, `.docx`, `.xlsx`, `.pptx`, `epub`), install these additional packages:
 
 ```bash
-pip install pypdf python-docx openpyxl python-pptx python-magic-bin
+pip install pypdf python-docx openpyxl python-pptx python-magic-bin ebooklib
 ```
 
 > Cline will automatically detect missing dependencies and prompt you for approval to install them.

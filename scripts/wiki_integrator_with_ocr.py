@@ -113,6 +113,7 @@ MIME_TO_EXTENSIONS = {
     'text/html': ['.html', '.htm'],
     'text/xml': ['.xml'],
     'application/zip': ['.zip'],
+    'application/epub': ['.epub'],
     'application/rtf': ['.rtf'],
     'text/rtf': ['.rtf'],
 }
@@ -367,11 +368,17 @@ def detect_file_type(file_path):
                             continue
                     return mime_type
             
-            # For ZIP-based files (DOCX, XLSX, PPTX), we need to inspect the ZIP contents
+            # For ZIP-based files (DOCX, XLSX, PPTX, EPUB), we need to inspect the ZIP contents
             if header[:4] == b'PK\x03\x04':
                 try:
                     with zipfile.ZipFile(file_path, 'r') as zf:
-                        for name in zf.namelist():
+                        names = zf.namelist()
+                        names_lower = [n.lower() for n in names]
+                        # EPUB detection: look for META-INF/container.xml or mimetype file
+                        if any(n == 'mimetype' for n in names_lower) or \
+                           any(n == 'META-INF/container.xml' for n in names_lower):
+                            return 'application/epub'
+                        for name in names:
                             name_lower = name.lower()
                             if name_lower.startswith('word/') and name_lower.endswith('.xml'):
                                 return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -782,6 +789,46 @@ def process_file(file_path, filename):
                 print(f"[-] Missing 'python-pptx'. Skipping: {filename}")
                 return False
 
+        elif ext == ".epub":
+            try:
+                import ebooklib
+                from ebooklib import epub
+                book = epub.read_epub(file_path, options={'ignore_ncx': True})
+                items = list(book.get_items_of_type(ebooklib.ITEM_DOCUMENT))
+                chapters_text = []
+                for item in items:
+                    html = item.get_content().decode('utf-8', errors='replace')
+                    # Strip HTML tags to get plain text
+                    text = re.sub(r'<[^>]+>', '', html)
+                    text = re.sub(r'\s+', ' ', text).strip()
+                    if text:
+                        chapters_text.append(text)
+                content = "\n\n".join(chapters_text)
+            except ImportError:
+                print(f"[-] Missing 'ebooklib'. Install with: pip install ebooklib")
+                return False
+            except Exception as parse_err:
+                print(f"[!] ebooklib failed to parse '{filename}': {parse_err}")
+                print(f"[*] Falling back to raw ZIP text extraction...")
+                # Fallback: extract all text files from the EPUB ZIP
+                try:
+                    with zipfile.ZipFile(file_path, 'r') as zf:
+                        parts = []
+                        for name in zf.namelist():
+                            if name.endswith(('.xhtml', '.xml', '.html', '.htm')):
+                                try:
+                                    html = zf.read(name).decode('utf-8', errors='replace')
+                                    text = re.sub(r'<[^>]+>', '', html)
+                                    text = re.sub(r'\s+', ' ', text).strip()
+                                    if text:
+                                        parts.append(text)
+                                except Exception:
+                                    pass
+                        content = "\n\n".join(parts)
+                except Exception:
+                    print(f"[-] EPUB extraction failed for {filename}")
+                    return False
+
         else:
             print(f"[!] Unsupported format: {ext} ({filename})")
             return False
@@ -961,6 +1008,7 @@ def main():
     check_python_module("docx", "docx", "python-docx")
     check_python_module("openpyxl", "openpyxl", "openpyxl")
     check_python_module("pptx", "pptx", "python-pptx")
+    check_python_module("ebooklib", "ebooklib", "ebooklib")
     
     # Check python-magic with actual DLL verification
     magic_ok = check_python_module("magic", "magic", "python-magic")

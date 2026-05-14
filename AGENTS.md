@@ -8,7 +8,7 @@ We will follow the organizational structure suggested by Andrej Karpathy (https:
 
 ## Time Management
 
-When helping me create todo lists for my work and when prioritizing these tasks, we will use Brian Tracy’s "Eat That Frog!" method. Your goal is to help me stay focused on my most important tasks by applying these prioritization principles to the information we collect. The first key wiki page you will find there is `wiki/eat_that_frog_summary.md`. Please read it and integrate the approach into our work going forward.
+When helping me create todo lists for my work and when prioritizing these tasks, we will use Brian Tracy’s "Eat That Frog!" method. Your goal is to help me stay focused on my most important tasks by applying these prioritization principles to the information we collect. The first key wiki page you will find there are `wiki/eat_that_frog.md` and perhaps also `wiki/mastering_personal_productivity.md`. Please read those documents and integrate the overall approach and various techniques presented there into our work going forward.
 
 # Project Guidelines
 
@@ -31,13 +31,13 @@ When the user says "process raw" (or similar), run the wiki integrator script to
 
 This script will:
 1. Scan `raw/` for files not yet in `.froglet/processed_files.txt`
-2. Extract text from supported formats (`.md`, `.txt`, `.html`, `.docx`, `.xlsx`, `.pptx`, `.pdf`, images)
+2. Extract text from supported formats (`.md`, `.txt`, `.html`, `.docx`, `.xlsx`, `.pptx`, `.pdf`, `.epub`, images)
 3. Convert and save content to `wiki/` as snake_case markdown files
 4. Log processed filenames to the manifest
 5. Notify the user of any files which could not be processed and briefly explain why.
 
 **Prerequisites (missing dependencies):**
-- Python: `pip install pypdf python-docx openpyxl python-pptx Pillow`
+- Python: `pip install pypdf python-docx openpyxl python-pptx Pillow ebooklib`
 - Optional (enhanced MIME detection): `pip install python-magic` or `pip install python-magic-bin` (uses libmagic for content-based file type detection)
 - System (Windows): `winget install tesseract-ocr poppler-utils ImageMagick`
 
