@@ -54,7 +54,7 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
 ### 2. **Command Injection via Filenames**
 - **Risk Level**: LOW-MODERATE
 - **Concern**: The scripts call external tools with filenames as arguments. A crafted filename (e.g., containing backticks or `$()`  could theoretically cause command injection.
-- **Code**: `wiki_integrator_with_ocr.py`, lines 326–396
+- **Code**: `wiki_integrator_with_ocr.py`
 - **Current Safety**: Uses `subprocess.run()` with `shell=False`, which mitigates most injection risks.
 - **Residual Risk**: Very low because filenames are passed as arguments, not through shell interpretation.
 - **Recommendation for Users**: 
@@ -74,7 +74,7 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
 ### 4. **OCR and Temporary File Handling**
 - **Risk Level**: LOW
 - **Concern**: The OCR processing creates temporary files in `/tmp` (Linux/macOS) or `%TEMP%` (Windows). On shared systems, these could be world-readable.
-- **Code**: `wiki_integrator_with_ocr.py`, lines 309–354 (uses `tempfile.TemporaryDirectory()`)
+- **Code**: `wiki_integrator_with_ocr.py` (uses `tempfile.TemporaryDirectory()`)
 - **Current Safety**: ✅ Uses Python's `tempfile` module, which creates secure temporary directories with restrictive permissions.
 - **Mitigation for Users**:
   - ✅ Run on personal machines (not shared systems).
