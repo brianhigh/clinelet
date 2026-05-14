@@ -116,7 +116,7 @@ Based on my analysis of the `brianhigh/clinelet` repository, here is a security 
 - Users can modify scripts to add their own security checks.
 
 ### 4. **Multi-LLM Support**
-- The README supports local LLMs (Ollama, LM Studio), not just cloud APIs.
+- The README supports local LLMs (served via Ollama, LM Studio), not just cloud APIs.
 - Users can run this entirely offline.
 - No dependence on API providers' security practices.
 
