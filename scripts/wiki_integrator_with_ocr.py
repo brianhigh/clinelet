@@ -10,6 +10,23 @@ import zipfile
 import stat
 import atexit
 
+# Add scripts directory to path for importing formatter modules
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPTS_DIR not in sys.path:
+    sys.path.insert(0, SCRIPTS_DIR)
+
+try:
+    from docx_formatter import docx_to_markdown_simplified as docx_to_markdown_rich
+    HAVE_DOCX_RICH = True
+except ImportError:
+    HAVE_DOCX_RICH = False
+
+try:
+    from pptx_formatter import pptx_to_markdown_simplified as pptx_to_markdown_rich
+    HAVE_PPTX_RICH = True
+except ImportError:
+    HAVE_PPTX_RICH = False
+
 # Constants
 RAW_DIR = "raw"
 SPACE_DIR = "wiki"
@@ -753,9 +770,14 @@ def process_file(file_path, filename):
 
         elif ext == ".docx":
             try:
-                import docx
-                doc = docx.Document(file_path)
-                content = "\n".join([p.text for p in doc.paragraphs]).strip()
+                if HAVE_DOCX_RICH:
+                    content = docx_to_markdown_rich(file_path).strip()
+                    print(f"[*] Using rich DOCX extraction (preserving headings, lists, formatting)")
+                else:
+                    # Fallback: basic text extraction
+                    import docx as docx_lib
+                    doc = docx_lib.Document(file_path)
+                    content = "\n".join([p.text for p in doc.paragraphs]).strip()
             except ImportError:
                 print(f"[-] Missing 'python-docx'. Skipping: {filename}")
                 return False
@@ -777,14 +799,19 @@ def process_file(file_path, filename):
 
         elif ext == ".pptx":
             try:
-                import pptx
-                prs = pptx.Presentation(file_path)
-                lines = []
-                for slide in prs.slides:
-                    for shape in slide.shapes:
-                        if hasattr(shape, "text") and shape.text.strip():
-                            lines.append(shape.text.strip())
-                content = "\n".join(lines)
+                if HAVE_PPTX_RICH:
+                    content = pptx_to_markdown_rich(file_path)
+                    print(f"[*] Using rich PPTX extraction (preserving slide structure, titles, notes)")
+                else:
+                    # Fallback: basic text extraction
+                    import pptx as pptx_lib
+                    prs = pptx_lib.Presentation(file_path)
+                    lines = []
+                    for slide in prs.slides:
+                        for shape in slide.shapes:
+                            if hasattr(shape, "text") and shape.text.strip():
+                                lines.append(shape.text.strip())
+                    content = "\n".join(lines)
             except ImportError:
                 print(f"[-] Missing 'python-pptx'. Skipping: {filename}")
                 return False
