@@ -15,11 +15,12 @@ Following the organizational principles proposed by [Andrej Karpathy](https://gi
 **What it does:** Converts documents in `raw/` (PDF, DOCX, PPTX, etc.) into a structured, interlinked Markdown wiki in `wiki/` using VS Code + Cline (any LLM) + SilverBullet (or Obsidian).
 
 **Quick start:**
-1. `git clone` → copy `AGENTS.md` and `scripts/` to your workspace
-2. Drop documents into `raw/` → tell Cline: *"process raw and cleanup*"
-3. Browse results in SilverBullet (or Obsidian)
+1. `git clone` → copy `AGENTS.md`, `wiki/' and `scripts/` to your workspace
+2. Create a `raw/` folder in your workspace and drop documents into `raw/`
+3. Tell Cline: *"process raw and cleanup"*
+4. Browse results in SilverBullet (or Obsidian)
 
-**Two files, one job:** `AGENTS.md` (agent instructions) + `scripts/wiki_integrator.py` (extraction) = `wiki/` (output).
+**Two key files, one job:** `AGENTS.md` (agent instructions) + `scripts/wiki_integrator.py` (extraction) = `wiki/` (output).
 
 ---
 
@@ -90,19 +91,15 @@ This creates a `froglet/` folder containing the files from this repository.
 
 ### Step 2: Set Up Your Workspace
 
-Create a new directory for your wiki (e.g., `my_wiki/`) with the following structure:
+Create a new directory for your wiki (e.g., `workspace/`) with the following structure:
 
 ```text
-my_wiki/
+workspace/
 ├── AGENTS.md           ← Copy from froglet/AGENTS.md
 ├── scripts/            ← Copy from froglet/scripts/
-├── raw/                ← Place your source documents here
-└── wiki/               ← Your generated knowledge base
+├── raw/                ← Create this folder for your source documents
+└── wiki/               ← Copy from froglet/wiki/
 ```
-
-### Step 3: Copy Core Components
-
-Copy the `AGENTS.md` and `scripts/` folders from this repository into your new workspace directory.
 
 ---
 
@@ -172,12 +169,6 @@ Review and edit the following file to align with your specific workflow:
 
 - `AGENTS.md`
 
-### Step 3: Initialize the Wiki
-
-1. Open your empty `wiki/` folder in SilverBullet — `index.md` will be created automatically.
-2. If `index.md` is not created (or is bare), copy the included `index.md` into `wiki/`.
-3. Copy `eat_that_frog.md` into `wiki/` so Cline references it when generating todo lists.
-
 ---
 
 ## 📖 Usage
@@ -185,7 +176,7 @@ Review and edit the following file to align with your specific workflow:
 ### 1. Ingesting Data
 
 1. Place your source documents (`.txt`, `.md`, `.pdf`, `.docx`, `.xlsx`, `.pptx`, etc.) into the `raw/` folder.
-2. In VS Code, open your LLM Wiki project folder (e.g., `my_wiki`).
+2. In VS Code, open your LLM Wiki project folder (e.g., `workspace`).
 3. Select the Cline extension from the left-side navigation bar.
 4. In the Cline chat box, instruct Cline to run the integration script (**Act mode**):
 ```
