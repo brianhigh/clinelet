@@ -15,7 +15,7 @@ Following the organizational principles proposed by [Andrej Karpathy](https://gi
 **What it does:** Converts documents in `raw/` (PDF, DOCX, PPTX, etc.) into a structured, interlinked Markdown wiki in `wiki/` using VS Code + Cline (any LLM) + SilverBullet (or Obsidian).
 
 **Quick start:**
-1. `git clone` → copy `AGENTS.md`, `wiki/' and `scripts/` to your workspace
+1. `git clone` → copy `AGENTS.md`, `wiki/` and `scripts/` to your workspace
 2. Create a `raw/` folder in your workspace and drop documents into `raw/`
 3. Tell Cline: *"process raw and cleanup"*
 4. Browse results in SilverBullet (or Obsidian)
