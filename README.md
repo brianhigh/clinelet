@@ -226,10 +226,9 @@ This produces good results on Windows, macOS, and Linux.
 - Photographs with identifiable people
 - Medical images
 
-**Before using OCR**:
-- Do NOT process images containing biometric data
-- Manually redact sensitive information first
+**Before using OCR with sensitive data**:
 - Consider using local OCR only (tesseract), as we do here, rather than cloud services
+- Manually redact sensitive information before OCR processing
 
 ### 2. Managing the Wiki
 
