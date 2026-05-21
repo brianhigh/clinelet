@@ -19,7 +19,8 @@ Following the organizational principles proposed by [Andrej Karpathy](https://gi
 2. Create a `raw/` folder in your workspace and drop documents into `raw/`
 3. Tell Cline: *"process raw and cleanup"*
 4. Browse results in SilverBullet (or Obsidian)
-5. Optional: track changes in your wiki using Git: `cd wiki/; git init; git add .; git commit -m "First commit"`
+5. Optional: track changes in your wiki using Git:
+   - `cd wiki/; git init; git add .; git commit -m "First commit"`
 
 **Two key files, one job:** `AGENTS.md` (agent instructions) + `scripts/wiki_integrator.py` (extraction) = `wiki/` (output).
 
