@@ -221,15 +221,14 @@ This produces good results on Windows, macOS, and Linux.
 
 #### OCR & Image Privacy
 
-⚠️ **WARNING**: OCR processes all images in `raw/`, including sensitive content that might include:
+⚠️ **WARNING**: OCR processes all images in `raw/`, including potentially sensitive content that might include:
 - Screenshots with unmasked passwords
 - ID documents and passports
 - Photographs with identifiable people
 - Medical images
 
-**Before using OCR**:
-- Do NOT process images containing biometric data
-- Manually redact sensitive information first
+**Before using OCR with sensitive data**:
+- Manually redact sensitive information before OCR processing
 - Consider using local OCR only (tesseract), as we do here, rather than cloud services
 
 ### 2. Managing the Wiki

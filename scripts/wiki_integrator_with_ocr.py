@@ -978,7 +978,7 @@ def check_system_tool(tool_name, package_name=None):
 def print_dependency_report():
     """Print a report of all missing dependencies with installation instructions."""
     if not MISSING_DEPENDENCIES:
-        print("[✓] All dependencies are installed.")
+        print("[OK] All dependencies are installed.")
         return False
     
     os_info = get_os_info()
