@@ -19,6 +19,7 @@ Following the organizational principles proposed by [Andrej Karpathy](https://gi
 2. Create a `raw/` folder in your workspace and drop documents into `raw/`
 3. Tell Cline: *"process raw and cleanup"*
 4. Browse results in SilverBullet (or Obsidian)
+5. Optional: track changes in your wiki using Git: `cd wiki/; git init; git add .; git commit -m "First commit"`
 
 **Two key files, one job:** `AGENTS.md` (agent instructions) + `scripts/wiki_integrator.py` (extraction) = `wiki/` (output).
 
@@ -40,7 +41,7 @@ The following video introduces the concept and demonstrates an implementation wi
 | **Cline** | Easily restrict actions (read/write workspace files, only execute safe commands, no web or MCP access, etc.) |
 | **SilverBullet** | Supports Lua scripting and is open source ([self-hosted web app](https://github.com/silverbulletmd/silverbullet/blob/main/LICENSE.md)) or open core ([desktop app](https://silverbullet.plus/faq))|
 
-> **Alternatives:** You can also use [Obsidian](https://obsidian.md) with this setup if preferred. For an open-source VS Code alternative, use [VSCodium](https://vscodium.com).
+> **Alternatives:** You can also use [Obsidian](https://obsidian.md) with this setup if preferred. For an open-source VS Code alternative, use [VSCodium](https://vscodium.com) or [Code-OSS](https://github.com/code-oss-dev/code).
 
 ---
 
